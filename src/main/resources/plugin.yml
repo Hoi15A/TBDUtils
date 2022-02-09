@@ -1,0 +1,8 @@
+main: moe.neat.tbdvoiceaddons.Plugin
+name: TBDVoiceAddons
+version: 1.0
+api-version: "1.18"
+author: "Austin Albrecht"
+description: "Addons for voice chat"
+depend:
+  - voicechat
