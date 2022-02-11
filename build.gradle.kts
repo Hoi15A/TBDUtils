@@ -17,6 +17,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("de.maxhenkel.voicechat:voicechat-api:2.2.19")
+    implementation("org.reflections:reflections:0.10.2")
+    implementation("cloud.commandframework:cloud-paper:1.6.1")
+    implementation("cloud.commandframework:cloud-annotations:1.6.1")
 }
 
 java {

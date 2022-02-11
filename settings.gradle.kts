@@ -1,2 +1,2 @@
-rootProject.name = "TBDVoiceAddons"
+rootProject.name = "TBDUtils"
 

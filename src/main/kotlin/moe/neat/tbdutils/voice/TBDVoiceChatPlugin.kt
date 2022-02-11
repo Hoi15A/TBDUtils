@@ -1,18 +1,17 @@
-package moe.neat.tbdvoiceaddons.voice
+package moe.neat.tbdutils.voice
 
 import de.maxhenkel.voicechat.api.VoicechatApi
 import de.maxhenkel.voicechat.api.VoicechatPlugin
 import de.maxhenkel.voicechat.api.events.EventRegistration
 import de.maxhenkel.voicechat.api.events.PlayerConnectedEvent
 import de.maxhenkel.voicechat.api.events.PlayerDisconnectedEvent
-import moe.neat.tbdvoiceaddons.TabList
 import org.bukkit.Bukkit
 
 class TBDVoiceChatPlugin : VoicechatPlugin {
     private val tabList = TabList()
 
     override fun getPluginId(): String {
-        return "TBDVoiceChatAddon"
+        return "TBDVoiceChatPlugin"
     }
 
     override fun initialize(api: VoicechatApi?) {

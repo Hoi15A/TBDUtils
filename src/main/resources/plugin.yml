@@ -1,5 +1,5 @@
-main: moe.neat.tbdvoiceaddons.Plugin
-name: TBDVoiceAddons
+main: moe.neat.tbdutils.Plugin
+name: TBDUtils
 version: 1.0
 api-version: "1.18"
 author: "Austin Albrecht"

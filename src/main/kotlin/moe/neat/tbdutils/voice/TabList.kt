@@ -1,11 +1,11 @@
-package moe.neat.tbdvoiceaddons
+package moe.neat.tbdutils.voice
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import java.util.*
 
-private val CONFIG = Bukkit.getPluginManager().getPlugin("TBDVoiceAddons")?.config
+private val CONFIG = Bukkit.getPluginManager().getPlugin("TBDUtils")?.config
 private val ICON = Component.text(CONFIG?.getString("voiceIcon")!! + " ")
                             .color(TextColor.color(CONFIG.getInt("voiceIconColour")))
 
