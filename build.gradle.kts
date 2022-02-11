@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "moe.neat"
-version = "1.0-SNAPSHOT"
+version = "1.1-SNAPSHOT"
 
 repositories {
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }

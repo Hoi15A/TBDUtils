@@ -60,7 +60,6 @@ class Vanish : BaseCommand {
             }
 
             vanishedPlayers.remove(sender.uniqueId)
-            vanishedActionBarText(sender)
             sender.sendMessage(Component.text("You are no longer vanished!").color(NamedTextColor.GREEN))
         }
     }

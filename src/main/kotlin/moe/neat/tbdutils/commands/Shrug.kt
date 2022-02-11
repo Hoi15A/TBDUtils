@@ -16,7 +16,7 @@ class Shrug : BaseCommand {
         if (text == null) {
             sender.chat(SHRUG)
         } else {
-            sender.chat("> ${text.joinToString(" ")} $SHRUG")
+            sender.chat("${text.joinToString(" ")} $SHRUG")
         }
 
     }

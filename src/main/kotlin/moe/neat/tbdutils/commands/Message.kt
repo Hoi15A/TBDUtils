@@ -42,12 +42,12 @@ class Message : BaseCommand {
         val lastSender = lastMessageReceivedFrom[sender.uniqueId]
         if (lastSender != null && System.currentTimeMillis() - lastSender.timeStamp <= REPLY_TIMEOUT_SECONDS * 1000) {
 
-            val player = Bukkit.getPlayer(lastSender.sender)!!
-            if (player.isOnline) {
-                sendMessage(sender, player, text)
+            val offlinePlayer = Bukkit.getOfflinePlayer(lastSender.sender)
+            if (offlinePlayer.isOnline) {
+                sendMessage(sender, offlinePlayer.player!!, text)
             } else {
                 sender.sendMessage(
-                    Component.text("${player.name} is not online :pensive:")
+                    Component.text("${offlinePlayer.name} is not online :pensive:")
                         .decorate(TextDecoration.ITALIC)
                         .color(NamedTextColor.GRAY)
                 )
