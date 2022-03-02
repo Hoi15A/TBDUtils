@@ -45,7 +45,7 @@ class NetherCalc : BaseCommand {
                 )
             }
             World.Environment.THE_END -> sender.sendMessage(Component.text("Not quite sure what you are trying to do there friend, this is the end, but you do you.").color(NamedTextColor.RED))
-            World.Environment.CUSTOM -> sender.sendMessage(Component.text("Where even are you what...\nWell whatever you are doing I dont know where you'd link to so you are on your own.").color(NamedTextColor.RED))
+            World.Environment.CUSTOM -> sender.sendMessage(Component.text("Where even are you what...\nWell whatever you are doing I don't know where you'd link to so you are on your own.").color(NamedTextColor.RED))
         }
     }
 }
