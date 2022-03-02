@@ -7,6 +7,8 @@ import cloud.commandframework.annotations.CommandPermission
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.format.TextDecorationAndState
 import net.kyori.adventure.title.Title
 
 import org.bukkit.Bukkit
@@ -22,12 +24,14 @@ class Announcement : BaseCommand {
     @CommandPermission("tbdutils.command.announcement")
     fun announcement(@Argument("text") text: Array<String>) {
         for(players in Bukkit.getServer().onlinePlayers) {
-            players.playNote(players.location, Instrument.PLING, Note.sharp(0, Note.Tone.F))
+            players.playNote(players.location, Instrument.PLING, Note.sharp(1, Note.Tone.F))
 
             players.sendMessage(Component.text("Announcement: ")
                 .color(NamedTextColor.YELLOW)
+                .decoration(TextDecoration.BOLD, false)
                 .append(Component.text(text.joinToString(" "))
-                    .color(NamedTextColor.WHITE))
+                    .color(NamedTextColor.WHITE)
+                )
             )
 
             players.showTitle(Title.title(
