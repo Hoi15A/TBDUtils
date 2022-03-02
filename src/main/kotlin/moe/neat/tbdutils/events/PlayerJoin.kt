@@ -17,5 +17,7 @@ class PlayerJoin : Listener {
         vanishedPlayers.forEach { pl ->
             player.hidePlayer(Plugin.plugin, pl)
         }
+
+        player.resetTitle()
     }
 }
