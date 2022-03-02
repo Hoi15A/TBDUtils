@@ -28,9 +28,9 @@ class Announcement : BaseCommand {
 
             players.sendMessage(Component.text("Announcement: ")
                 .color(NamedTextColor.YELLOW)
-                .decoration(TextDecoration.BOLD, false)
+                .decoration(TextDecoration.BOLD, true)
                 .append(Component.text(text.joinToString(" "))
-                    .color(NamedTextColor.WHITE)
+                    .color(NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false)
                 )
             )
 
