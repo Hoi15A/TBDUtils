@@ -11,14 +11,14 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
-private data class LastSender(val sender: UUID, val timeStamp: Long)
+private data class LastMessager(val sender: UUID, val timeStamp: Long)
 
 @Suppress("unused")
 @CommandPermission("tbdutils.command.msg")
 class Message : BaseCommand {
-    private val lastMessageReceivedFrom = mutableMapOf<UUID, LastSender>()
+    private val lastConversationPartner = mutableMapOf<UUID, LastMessager>()
 
-    @CommandMethod("msg|w|tell|explain|beg <player> <text>")
+    @CommandMethod("msg|w|m|tell|explain|beg <player> <text>")
     @CommandDescription("Send somebody a private message")
     fun msg(sender: Player, @Argument("player") recipient: Player, @Argument("text") text: Array<String>) {
         if (sender == recipient) {
@@ -39,7 +39,7 @@ class Message : BaseCommand {
     @CommandMethod("r|reply <text>")
     @CommandDescription("Reply to the last private message you received")
     fun reply(sender: Player, @Argument("text") text: Array<String>) {
-        val lastSender = lastMessageReceivedFrom[sender.uniqueId]
+        val lastSender = lastConversationPartner[sender.uniqueId]
         if (lastSender != null && System.currentTimeMillis() - lastSender.timeStamp <= REPLY_TIMEOUT_SECONDS * 1000) {
 
             val offlinePlayer = Bukkit.getOfflinePlayer(lastSender.sender)
@@ -79,7 +79,8 @@ class Message : BaseCommand {
                 .append(Component.text(text.joinToString(" ")))
         )
 
-        lastMessageReceivedFrom[recipient.uniqueId] = LastSender(sender.uniqueId, System.currentTimeMillis())
+        lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
+        lastConversationPartner[sender.uniqueId] = LastMessager(recipient.uniqueId, System.currentTimeMillis())
     }
 
     companion object {
