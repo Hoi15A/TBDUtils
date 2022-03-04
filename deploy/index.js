@@ -19,12 +19,16 @@ async function main() {
 
     await client.cd("plugins");
     const oldPluginFile = (await client.list()).find(file => file.isFile && nameRegex.test(file.name))
-    console.log(`Found old plugin file: ${oldPluginFile}`)
+    if (oldPluginFile) {
+        console.log(`Found old plugin file: ${oldPluginFile.name}`)
+        await client.remove(oldPluginFile.name)
+        console.log("Deleted old plugin")
+    } else {
+        console.log("No old plugin found")
+    }
 
     await client.uploadFrom(newPluginFile, newPluginFile)
     console.log("Uploaded new plugin")
-    await client.remove(oldPluginFile.name)
-    console.log("Deleted old plugin")
 
     client.close()
 }
