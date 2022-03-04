@@ -1,0 +1,24 @@
+on:
+  push:
+    branches:
+      - master
+      - ci-cd
+
+jobs:
+  gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build Plugin Jar
+        run: ./gradlew shadowJar
