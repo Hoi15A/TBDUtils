@@ -44,15 +44,15 @@ jobs:
           name: TBDUtils
           path: deploy
 
+      - name: Switch to deploy directory
+        run: cd deploy
+
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '17'
           cache: 'npm'
           cache-dependency-path: deploy/package-lock.json
-
-      - name: Switch to deploy directory
-        run: cd deploy
 
       - name: Install dependencies
         run: npm install
