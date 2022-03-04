@@ -44,9 +44,6 @@ jobs:
           name: TBDUtils
           path: deploy
 
-      - name: Switch to deploy directory
-        run: cd deploy
-
       - name: Setup node
         uses: actions/setup-node@v2
         with:
@@ -55,9 +52,11 @@ jobs:
           cache-dependency-path: deploy/package-lock.json
 
       - name: Install dependencies
+        working-directory: deploy
         run: npm install
 
       - name: Run deploy
+        working-directory: deploy
         run: npm start
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
