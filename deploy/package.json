@@ -1,0 +1,14 @@
+{
+  "name": "tbdutils-deploy",
+  "version": "1.0.0",
+  "description": "Small helper script to deploy the tbd utils plugin",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Austin Albrecht",
+  "license": "ISC",
+  "dependencies": {
+    "basic-ftp": "^4.6.6"
+  }
+}
