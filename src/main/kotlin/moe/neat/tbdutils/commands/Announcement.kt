@@ -32,7 +32,7 @@ class Announcement : BaseCommand {
                 players.showTitle(Title.title(
                     Component.text("Announcement").color(NamedTextColor.YELLOW),
                     Component.text(text.joinToString(" ")),
-                    Title.Times.of(Duration.ofSeconds(1.toLong()),
+                    Title.Times.times(Duration.ofSeconds(1.toLong()),
                         Duration.ofSeconds(6.toLong()),
                         Duration.ofSeconds(1.toLong()))
                     )

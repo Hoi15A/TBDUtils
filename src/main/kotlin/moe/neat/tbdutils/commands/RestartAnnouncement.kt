@@ -33,7 +33,7 @@ class RestartAnnouncement : BaseCommand {
             players.showTitle(Title.title(
                 Component.text("Server restarting").color(NamedTextColor.RED),
                 Component.text("In $time minute(s)"),
-                Title.Times.of(Duration.ofSeconds(1.toLong()),
+                Title.Times.times(Duration.ofSeconds(1.toLong()),
                     Duration.ofSeconds(3.toLong()),
                     Duration.ofSeconds(1.toLong()))
                 )

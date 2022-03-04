@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "moe.neat"
-version = "1.3-SNAPSHOT"
+version = "1.4-SNAPSHOT"
 
 repositories {
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly("de.maxhenkel.voicechat:voicechat-api:2.2.19")
     implementation("org.reflections:reflections:0.10.2")
     implementation("cloud.commandframework:cloud-paper:1.6.2")
