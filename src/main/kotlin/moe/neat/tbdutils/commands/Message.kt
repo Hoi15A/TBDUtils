@@ -7,6 +7,7 @@ import cloud.commandframework.annotations.CommandPermission
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
@@ -17,6 +18,7 @@ private data class LastMessager(val sender: UUID, val timeStamp: Long)
 @CommandPermission("tbdutils.command.msg")
 class Message : BaseCommand {
     private val lastConversationPartner = mutableMapOf<UUID, LastMessager>()
+    private val mm = MiniMessage.miniMessage()
 
     @CommandMethod("msg|w|m|tell|explain|beg <player> <text>")
     @CommandDescription("Send somebody a private message")
@@ -24,12 +26,7 @@ class Message : BaseCommand {
         if (sender == recipient) {
             System.currentTimeMillis() / 1000
             sender.sendMessage(
-                Component.text().decorate(TextDecoration.ITALIC)
-                    .append(Component.text("You"))
-                    .append(ARROW)
-                    .append(Component.text("Yourself").color(NamedTextColor.YELLOW))
-                    .append(COLON)
-                    .append(Component.text(text.joinToString(" ")))
+                mm.deserialize("<i>You -> <yellow>Yourself</yellow>: ${text.joinToString(" ")}</i>")
             )
         } else {
             sendMessage(sender, recipient, text)
@@ -47,36 +44,24 @@ class Message : BaseCommand {
                 sendMessage(sender, offlinePlayer.player!!, text)
             } else {
                 sender.sendMessage(
-                    Component.text("${offlinePlayer.name} is not online :pensive:")
-                        .decorate(TextDecoration.ITALIC)
-                        .color(NamedTextColor.GRAY)
+                    mm.deserialize("<i><gray>${offlinePlayer.name} is not online :pensive:</gray></i>")
                 )
             }
         } else {
             sender.sendMessage(
-                Component.text("Nobody has sent you a message in a while, but don't worry I still love you <3 - Austin")
-                .decorate(TextDecoration.ITALIC)
-                .color(NamedTextColor.GRAY)
+                mm.deserialize("<i><gray>Nobody has sent you a message in a while, but don't worry I still love you <3 - Austin</gray></i>")
             )
         }
     }
 
     private fun sendMessage(sender: Player, recipient: Player, text: Array<String>) {
+
         sender.sendMessage(
-            Component.text().decorate(TextDecoration.ITALIC)
-                .append(Component.text("You").color(NamedTextColor.YELLOW))
-                .append(ARROW)
-                .append(recipient.displayName())
-                .append(COLON)
-                .append(Component.text(text.joinToString(" ")))
+            mm.deserialize("<i><yellow>You</yellow> -> ${mm.serialize(recipient.displayName())}: ${text.joinToString(" ")}</i>")
         )
 
         recipient.sendMessage(
-            sender.displayName().decorate(TextDecoration.ITALIC)
-                .append(ARROW)
-                .append(Component.text("You").color(NamedTextColor.YELLOW))
-                .append(COLON)
-                .append(Component.text(text.joinToString(" ")))
+            mm.deserialize("<i>${mm.serialize(sender.displayName())} -> <yellow>You</yellow>: ${text.joinToString(" ")}</i>")
         )
 
         lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
@@ -84,8 +69,6 @@ class Message : BaseCommand {
     }
 
     companion object {
-        private val ARROW = Component.text(" -> ")
-        private val COLON = Component.text(": ")
         private const val REPLY_TIMEOUT_SECONDS = 60 * 60 * 1 // 1 Hour
     }
 }
