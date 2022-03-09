@@ -54,6 +54,20 @@ class Message : BaseCommand {
         }
     }
 
+    @CommandMethod("boop <player>")
+    fun boop(sender: Player, @Argument("player") recipient: Player) {
+        sender.sendMessage(
+            mm.deserialize("<light_purple>To</light_purple> ${mm.serialize(recipient.displayName())}: <b><light_purple>Boop!</light_purple></b>")
+        )
+
+        recipient.sendMessage(
+            mm.deserialize("<light_purple>From</light_purple> ${mm.serialize(sender.displayName())}: <b><light_purple>Boop!</light_purple></b>")
+        )
+
+        lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
+        lastConversationPartner[sender.uniqueId] = LastMessager(recipient.uniqueId, System.currentTimeMillis())
+    }
+
     private fun sendMessage(sender: Player, recipient: Player, text: Array<String>) {
 
         sender.sendMessage(
