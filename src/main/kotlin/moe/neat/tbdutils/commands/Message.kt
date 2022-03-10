@@ -4,22 +4,36 @@ import cloud.commandframework.annotations.Argument
 import cloud.commandframework.annotations.CommandDescription
 import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
+/**
+ * @property sender Player that represents some other players last conversation partner
+ * @property timeStamp Time of when the last message occurred as a timestamp in seconds.
+ */
 private data class LastMessager(val sender: UUID, val timeStamp: Long)
 
+/**
+ * Defines all command methods related to Messages in the plugin
+ *
+ * @property lastConversationPartner Stores a [LastMessager] for a given UUID representing a player
+ */
 @Suppress("unused")
 @CommandPermission("tbdutils.command.msg")
 class Message : BaseCommand {
     private val lastConversationPartner = mutableMapOf<UUID, LastMessager>()
     private val mm = MiniMessage.miniMessage()
 
+    /**
+     * Command that allows players to send a direct message to another player.
+     * Replacement for the vanilla /msg command in order to allow for replies to function.
+     *
+     * @param sender Player running the command
+     * @param recipient Player that should receive the message
+     * @param text The message that should be sent
+     */
     @CommandMethod("msg|w|m|tell|explain|beg <player> <text>")
     @CommandDescription("Send somebody a private message")
     fun msg(sender: Player, @Argument("player") recipient: Player, @Argument("text") text: Array<String>) {
@@ -33,6 +47,13 @@ class Message : BaseCommand {
         }
     }
 
+    /**
+     * Command that allows the player to respond to previous messages, including their own.
+     * Timestamps of the last player talked to are stored in [lastConversationPartner]
+     *
+     * @param sender Player running the command
+     * @param text Message to reply with
+     */
     @CommandMethod("r|reply <text>")
     @CommandDescription("Reply to the last private message you received")
     fun reply(sender: Player, @Argument("text") text: Array<String>) {
@@ -54,7 +75,15 @@ class Message : BaseCommand {
         }
     }
 
+    /**
+     * Custom implementation of the Hypixel boop command.
+     * Is functionally the same as [msg] just with different formatting.
+     *
+     * @param sender Player running the command
+     * @param recipient Player that should receive a boop
+     */
     @CommandMethod("boop <player>")
+    @CommandDescription("Boop a player")
     fun boop(sender: Player, @Argument("player") recipient: Player) {
         sender.sendMessage(
             mm.deserialize("<light_purple>To</light_purple> ${mm.serialize(recipient.displayName())}: <b><light_purple>Boop!</light_purple></b>")
@@ -68,8 +97,15 @@ class Message : BaseCommand {
         lastConversationPartner[sender.uniqueId] = LastMessager(recipient.uniqueId, System.currentTimeMillis())
     }
 
+    /**
+     * Send a direct message from one player to another. Then also set [lastConversationPartner] for both players
+     * in order for [reply] to function.
+     *
+     * @param sender Player sending the message
+     * @param recipient Player receiving the message
+     * @param text
+     */
     private fun sendMessage(sender: Player, recipient: Player, text: Array<String>) {
-
         sender.sendMessage(
             mm.deserialize("<i><yellow>You</yellow> -> ${mm.serialize(recipient.displayName())}: ${text.joinToString(" ")}</i>")
         )
