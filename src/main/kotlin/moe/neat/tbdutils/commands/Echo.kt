@@ -8,6 +8,9 @@ import org.bukkit.command.CommandSender
 
 @Suppress("unused")
 class Echo : BaseCommand {
+    /**
+     * Simple echo command. Useful for checking that the plugin is loaded and commands are functional.
+     */
     @CommandMethod("echo <text>")
     @CommandDescription("Echooooooooooooooooooo echoooo echooooo")
     @CommandPermission("tbdutils.command.echo")

@@ -9,6 +9,13 @@ import org.bukkit.entity.Player
 
 @Suppress("unused")
 class Shrug : BaseCommand {
+    /**
+     * Command to append shrug to a message.
+     * As this uses [Player.chat] there are some odd quirks like `/shrug /kick` working. This is considered a "feature".
+     *
+     * @param sender Player sending the shrug
+     * @param text Optional text to prepend to the shrug
+     */
     @CommandMethod("shrug [text]")
     @CommandDescription(SHRUG)
     @CommandPermission("tbdutils.command.shrug")
