@@ -4,6 +4,10 @@ import cloud.commandframework.annotations.Argument
 import cloud.commandframework.annotations.CommandDescription
 import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
+import moe.neat.tbdutils.Plugin
+import moe.neat.tbdutils.util.Hypixel
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -14,6 +18,8 @@ import java.util.*
  * @property timeStamp Time of when the last message occurred as a timestamp in seconds.
  */
 private data class LastMessager(val sender: UUID, val timeStamp: Long)
+
+private val HYPIXEL = Hypixel(Plugin.plugin.config.getString("hypixelApiKey")!!)
 
 /**
  * Defines all command methods related to Messages in the plugin
@@ -85,12 +91,17 @@ class Message : BaseCommand {
     @CommandMethod("boop <player>")
     @CommandDescription("Boop a player")
     fun boop(sender: Player, @Argument("player") recipient: Player) {
+        val sendRank = HYPIXEL.getHypixelDisplayName(sender)
+        val recRank = HYPIXEL.getHypixelDisplayName(recipient)
+
+        recipient.playSound(Sound.sound(Key.key("minecraft:entity.axolotl.idle_air"), Sound.Source.MASTER, 1f, 1f))
+
         sender.sendMessage(
-            mm.deserialize("<light_purple>To</light_purple> ${mm.serialize(recipient.displayName())}: <b><light_purple>Boop!</light_purple></b>")
+            mm.deserialize("<light_purple>To</light_purple> ${mm.serialize(recRank)}<gray>:</gray> <b><light_purple>Boop!</light_purple></b>")
         )
 
         recipient.sendMessage(
-            mm.deserialize("<light_purple>From</light_purple> ${mm.serialize(sender.displayName())}: <b><light_purple>Boop!</light_purple></b>")
+            mm.deserialize("<light_purple>From</light_purple> ${mm.serialize(sendRank)}<gray>:</gray> <b><light_purple>Boop!</light_purple></b>")
         )
 
         lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
