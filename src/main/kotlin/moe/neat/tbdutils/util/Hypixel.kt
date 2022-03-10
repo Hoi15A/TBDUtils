@@ -9,6 +9,11 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.entity.Player
 import java.util.UUID
 
+/**
+ * Utilities relating to Hypixel using the [HypixelAPI]
+ *
+ * @param apiKey Apikey obtained with /api on Hypixel
+ */
 class Hypixel(apiKey: String) {
     private val api = HypixelAPI.create(apiKey)
     private val playerCache = mutableMapOf<UUID, HypixelPlayer>()
@@ -21,6 +26,12 @@ class Hypixel(apiKey: String) {
         return playerCache[player]!!
     }
 
+    /**
+     * Get the formatted display name of a player on Hypixel.
+     *
+     * @param player The player for which to fetch the display name
+     * @return Hypixel styled component
+     */
     fun getHypixelDisplayName(player: Player): Component {
         return when (getPlayer(player.uniqueId).newPackageRank!!) {
             PlayerRank.DEFAULT -> Component.text(player.name).color(NamedTextColor.GRAY)
