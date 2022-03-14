@@ -33,8 +33,11 @@ class Hypixel(apiKey: String) {
      * @return Hypixel styled component
      */
     fun getHypixelDisplayName(player: Player): Component {
-        return when (getPlayer(player.uniqueId).newPackageRank!!) {
-            PlayerRank.DEFAULT -> Component.text(player.name).color(NamedTextColor.GRAY)
+        val defaultComponent = Component.text(player.name).color(NamedTextColor.GRAY)
+        val rank = getPlayer(player.uniqueId).newPackageRank ?: return defaultComponent
+
+        return when (rank) {
+            PlayerRank.DEFAULT -> defaultComponent
             PlayerRank.VIP -> Component.text("[VIP] ${player.name}").color(NamedTextColor.GREEN)
             PlayerRank.VIP_PLUS -> mm.deserialize("<green>[VIP<gold>+</gold>] ${player.name}</green>")
             PlayerRank.MVP -> Component.text("[MVP] ${player.name}").color(NamedTextColor.AQUA)
