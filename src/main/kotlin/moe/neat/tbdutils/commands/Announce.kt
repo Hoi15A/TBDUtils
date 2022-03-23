@@ -28,7 +28,7 @@ class Announce : BaseCommand {
         for (player in Bukkit.getServer().onlinePlayers) {
             player.playNote(player.location, Instrument.PLING, Note.sharp(1, Note.Tone.F))
             player.sendMessage(
-                mm.deserialize("<b><yellow>Announcement:</yellow></b> ${text.joinToString(" ")}")
+                mm.deserialize("<b><yellow>Announcement:</yellow></b> ${mm.stripTags(text.joinToString(" "))}")
             )
 
             player.showTitle(

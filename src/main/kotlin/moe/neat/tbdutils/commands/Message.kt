@@ -46,7 +46,7 @@ class Message : BaseCommand {
         if (sender == recipient) {
             System.currentTimeMillis() / 1000
             sender.sendMessage(
-                mm.deserialize("<i>You -> <yellow>Yourself</yellow>: ${text.joinToString(" ")}</i>")
+                mm.deserialize("<i>You -> <yellow>Yourself</yellow>: ${mm.stripTags(text.joinToString(" "))}</i>")
             )
         } else {
             sendMessage(sender, recipient, text)
@@ -117,12 +117,14 @@ class Message : BaseCommand {
      * @param text
      */
     private fun sendMessage(sender: Player, recipient: Player, text: Array<String>) {
+        val message = mm.stripTags(text.joinToString(" "))
+
         sender.sendMessage(
-            mm.deserialize("<i><yellow>You</yellow> -> ${mm.serialize(recipient.displayName())}: ${text.joinToString(" ")}</i>")
+            mm.deserialize("<i><yellow>You</yellow> -> ${mm.serialize(recipient.displayName())}: $message</i>")
         )
 
         recipient.sendMessage(
-            mm.deserialize("<i>${mm.serialize(sender.displayName())} -> <yellow>You</yellow>: ${text.joinToString(" ")}</i>")
+            mm.deserialize("<i>${mm.serialize(sender.displayName())} -> <yellow>You</yellow>: $message</i>")
         )
 
         lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
