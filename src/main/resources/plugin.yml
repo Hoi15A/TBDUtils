@@ -6,3 +6,4 @@ authors: ["Austin Albrecht", "Byrt"]
 description: "General utilities for TBD"
 depend:
   - voicechat
+  - DiscordSRV
