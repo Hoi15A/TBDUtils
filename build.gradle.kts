@@ -11,6 +11,10 @@ repositories {
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
     maven { url = uri("https://maven.maxhenkel.de/repository/public") }
     maven { url = uri("https://nexus.scarsz.me/content/groups/public/") }
+    maven {
+        name = "m2-dv8tion"
+        url = uri("https://m2.dv8tion.net/releases")
+    }
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
 }
