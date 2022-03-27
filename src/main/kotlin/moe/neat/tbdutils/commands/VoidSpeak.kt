@@ -19,7 +19,7 @@ class VoidSpeak : BaseCommand {
     @CommandPermission("tbdutils.command.voidsay")
     fun voidSay(sender: Player, @Argument("text") text: Array<String>) {
         var msgText = mm.stripTags(text.joinToString(" "))
-        val messageReadable = mm.deserialize("\\<${sender.name}> <hover:show_text:'$msgText'><font:alt><gradient:#d10aaf:#8e0ad1>$msgText</gradient></font></hover>")
+        val messageReadable = mm.deserialize("\\<${sender.name}> <hover:show_text:'${msgText.replace("'","\\'")}'><font:alt><gradient:#d10aaf:#8e0ad1>$msgText</gradient></font></hover>")
         val messageNonReadable = mm.deserialize("\\<${sender.name}> <font:alt><gradient:#d10aaf:#8e0ad1>$msgText</gradient></font>")
 
         Bukkit.getServer().onlinePlayers.forEach { player ->
