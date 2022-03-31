@@ -1,13 +1,17 @@
 package moe.neat.tbdutils.events
 
+import com.destroystokyo.paper.ClientOption
 import moe.neat.tbdutils.Plugin
 import moe.neat.tbdutils.commands.Vanish
 import moe.neat.tbdutils.util.AprilFools
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.inventory.MainHand
 
 @Suppress("unused")
 class PlayerJoin : Listener {
