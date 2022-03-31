@@ -3,10 +3,11 @@ package moe.neat.tbdutils.events
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
-import org.bukkit.Location
 
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -17,6 +18,9 @@ import org.bukkit.event.entity.ProjectileHitEvent
 @Suppress("unused")
 class PlayerUseTeleportBow : Listener {
     private val teleportSound: Sound = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.MASTER, 1f, 1f)
+
+    private val failSound: Sound = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.MASTER, 1f, 0f)
+    private val failMessage: Component = Component.text("You do not have the ability to wield this item.").color(NamedTextColor.RED)
 
     @EventHandler
     fun onProjectileHit(e : ProjectileHitEvent) {
@@ -35,6 +39,11 @@ class PlayerUseTeleportBow : Listener {
                     player.teleport(teleportLoc)
                 }
                 player.playSound(teleportSound)
+                e.entity.remove()
+            }
+            if(!player.hasPermission("tbdutils.customitems.use") && player.inventory.itemInMainHand.type == Material.BOW && player.inventory.itemInMainHand.itemMeta.displayName() == Component.text("Teleport Bow").color(TextColor.fromHexString("#5524c7")).decoration(TextDecoration.ITALIC, false)) {
+                player.sendMessage(failMessage)
+                player.playSound(failSound)
                 e.entity.remove()
             }
         }

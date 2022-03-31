@@ -5,8 +5,6 @@ import cloud.commandframework.annotations.CommandDescription
 import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
 
-import net.kyori.adventure.key.Key
-import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
@@ -22,9 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta
 
 @Suppress("unused")
 class GiveCustomItem : BaseCommand {
-    private val failSound: Sound = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.MASTER, 1f, 0f)
-    private val failMessage: Component = Component.text("This item is not implemented yet").color(NamedTextColor.RED)
-
     @CommandMethod("customitem <item>")
     @CommandDescription("Gives the executor the custom item specified")
     @CommandPermission("tbdutils.command.customitem")
