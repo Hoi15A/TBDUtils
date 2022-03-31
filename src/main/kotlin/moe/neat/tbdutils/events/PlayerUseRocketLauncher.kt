@@ -1,9 +1,10 @@
 package moe.neat.tbdutils.events
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Location
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
@@ -15,13 +16,13 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.scheduler.BukkitRunnable
 
 @Suppress("unused")
-class PlayerRightClickRocketLauncher : Listener {
+class PlayerUseRocketLauncher : Listener {
     private lateinit var fireball: Fireball
     private lateinit var creeper: Creeper
 
     @EventHandler
-    private fun onPlayerRightClickRocketLauncher(e: PlayerInteractEvent) {
-        if (e.player.inventory.itemInMainHand.type == Material.GOLDEN_SHOVEL && e.player.inventory.itemInMainHand.itemMeta.displayName() == Component.text("Rocket Launcher").color(NamedTextColor.GOLD)) {
+    private fun onPlayerUseRocketLauncher(e : PlayerInteractEvent) {
+        if (e.player.hasPermission("tbdutils.customitems.use") && e.player.inventory.itemInMainHand.type == Material.GOLDEN_HORSE_ARMOR && e.player.inventory.itemInMainHand.itemMeta.displayName() == Component.text("Rocket Launcher").color(TextColor.fromHexString("#faac05")).decoration(TextDecoration.ITALIC, false)) {
             if (e.action == Action.RIGHT_CLICK_AIR) {
                 onLaunch(e.player)
             } else if (e.action == Action.RIGHT_CLICK_BLOCK) {
@@ -30,8 +31,8 @@ class PlayerRightClickRocketLauncher : Listener {
         }
     }
 
-    private fun onLaunch(player: Player) {
-        fireball = player.launchProjectile(Fireball::class.java, player.location.direction.multiply(0.75))
+    private fun onLaunch(player : Player) {
+        fireball = player.launchProjectile(Fireball::class.java, player.location.direction.multiply(2.75))
         fireball.setIsIncendiary(false)
         fireball.yield = 0f
         fireball.customName(Component.text("rocket"))
@@ -42,26 +43,33 @@ class PlayerRightClickRocketLauncher : Listener {
                 override fun run() {
                     if (fireball.isDead) {
                         val fireballDeathLoc: Location = fireball.location.clone()
-                        fireballDeathLoc.y += 2.5
+                        fireballDeathLoc.y += 1.75
                         creeper = fireball.world.spawn(fireballDeathLoc, Creeper::class.java)
                         creeper.explode()
                         cancel()
                     }
                 }
-            }.runTaskTimer(it, 0L, 2L)
+            }.runTaskTimer(it, 0L, 1L)
         }
     }
 
     @EventHandler
-    fun onFireballHit(e: EntityDamageByEntityEvent) {
+    private fun onFireballHit(e : EntityDamageByEntityEvent) {
         if(e.damager == fireball || e.damager == creeper) {
             e.damage = 0.0
         }
     }
 
     @EventHandler
-    fun onFireballExplode(e: EntityExplodeEvent) {
+    private fun onFireballExplode(e : EntityExplodeEvent) {
         if(e.entity == fireball) {
+            e.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    private fun onInteract(e : PlayerInteractEvent) {
+        if(e.player.inventory.itemInMainHand.type == Material.GOLDEN_HORSE_ARMOR && e.player.inventory.itemInMainHand.itemMeta.displayName() == Component.text("Rocket Launcher").color(TextColor.fromHexString("#faac05")).decoration(TextDecoration.ITALIC, false)) {
             e.isCancelled = true
         }
     }
