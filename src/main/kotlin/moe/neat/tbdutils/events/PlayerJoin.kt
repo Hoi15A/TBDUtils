@@ -2,6 +2,7 @@ package moe.neat.tbdutils.events
 
 import moe.neat.tbdutils.Plugin
 import moe.neat.tbdutils.commands.Vanish
+import moe.neat.tbdutils.util.AprilFools
 
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
@@ -19,5 +20,7 @@ class PlayerJoin : Listener {
         }
 
         player.resetTitle()
+
+        AprilFools.playerJoinEvent(e)
     }
 }
