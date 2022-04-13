@@ -86,7 +86,7 @@ class GiveCustomItem : BaseCommand {
         teleportSpoonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE)
         teleportSpoon.itemMeta = teleportSpoonMeta
         player.inventory.addItem(ItemStack(teleportSpoon))
-        player.sendMessage(Component.text("Received a ${CustomItems.ASPECT_OF_THE_VOID}").color(NamedTextColor.GREEN))
+        player.sendMessage(Component.text("Received an ${CustomItems.ASPECT_OF_THE_VOID}").color(NamedTextColor.GREEN))
     }
 
     enum class CustomItems {

@@ -58,7 +58,7 @@ class PlayerUseAspectOfTheVoid : Listener {
         val location: Location = block.location
         val pitch = player.eyeLocation.pitch
         val yaw = player.eyeLocation.yaw
-        location.add(0.0, 1.0, 0.0)
+        location.add(0.5, 1.0, 0.5)
         location.yaw = yaw
         location.pitch = pitch
         player.teleport(location)
