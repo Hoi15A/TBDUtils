@@ -36,6 +36,9 @@ class GiveCustomItem : BaseCommand {
             CustomItems.TELEPORT_BOW -> {
                 createTeleportBow(player)
             }
+            CustomItems.ASPECT_OF_THE_VOID -> {
+                createTeleportSpoon(player)
+            }
         }
     }
 
@@ -74,9 +77,22 @@ class GiveCustomItem : BaseCommand {
         player.sendMessage(Component.text("Received a ${CustomItems.TELEPORT_BOW}").color(NamedTextColor.GREEN))
     }
 
+    private fun createTeleportSpoon(player : Player) {
+        val teleportSpoon = ItemStack(Material.DIAMOND_SHOVEL)
+        val teleportSpoonMeta: ItemMeta = teleportSpoon.itemMeta
+        teleportSpoonMeta.displayName(Component.text("Aspect of the Void").color(TextColor.fromHexString("#992af5")).decoration(TextDecoration.ITALIC, false))
+        teleportSpoonMeta.isUnbreakable = true
+        teleportSpoonMeta.addEnchant(Enchantment.MENDING, 1, false)
+        teleportSpoonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE)
+        teleportSpoon.itemMeta = teleportSpoonMeta
+        player.inventory.addItem(ItemStack(teleportSpoon))
+        player.sendMessage(Component.text("Received a ${CustomItems.ASPECT_OF_THE_VOID}").color(NamedTextColor.GREEN))
+    }
+
     enum class CustomItems {
         ROCKET_LAUNCHER,
         LIGHTNING_WAND,
-        TELEPORT_BOW
+        TELEPORT_BOW,
+        ASPECT_OF_THE_VOID
     }
 }
