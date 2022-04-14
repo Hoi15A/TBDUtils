@@ -12,17 +12,22 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent
 import org.bukkit.event.player.PlayerChatEvent
 import org.bukkit.scheduler.BukkitRunnable
 
-@Suppress("unused")
+@Suppress("unused","deprecation")
 class PlayerChat : Listener {
     @EventHandler
     private fun onChat(e : PlayerChatEvent) {
+        //TODO: Add a toggle for this
         if (e.player.name == "Byrtrum" && e.player.gameMode != GameMode.SPECTATOR) {
-            val dialogue = e.player.location.world.spawn(e.player.location, ArmorStand::class.java)
-            dialogue.addScoreboardTag("dialogue")
-            dialogue.isInvulnerable = true
+            val spawnDialogueLocX = e.player.location.x
+            val spawnDialogueLocY = e.player.location.y + 1.25
+            val spawnDialogueLocZ = e.player.location.z
+            val spawnDialogueLoc = Location(e.player.world, spawnDialogueLocX, spawnDialogueLocY, spawnDialogueLocZ)
+            val dialogue = e.player.location.world.spawn(spawnDialogueLoc, ArmorStand::class.java)
             dialogue.isInvisible = true
             dialogue.isSmall = true
+            dialogue.isInvulnerable = true
             dialogue.setGravity(false)
+            dialogue.addScoreboardTag("dialogue")
             dialogue.customName(Component.text(e.message)
                 .decoration(TextDecoration.BOLD, true))
             dialogue.isCustomNameVisible = true
@@ -48,6 +53,9 @@ class PlayerChat : Listener {
 
     @EventHandler
     private fun playerInteractWithDialogue(e : PlayerArmorStandManipulateEvent) {
-        e.isCancelled = true
+        if(e.rightClicked.scoreboardTags.contains("dialogue"))
+        {
+            e.isCancelled = true
+        }
     }
 }
