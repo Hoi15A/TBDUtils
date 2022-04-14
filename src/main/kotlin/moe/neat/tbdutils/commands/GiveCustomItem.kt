@@ -26,7 +26,7 @@ class GiveCustomItem : BaseCommand {
     fun customItem(sender: CommandSender, @Argument("item") item: CustomItems) {
         val player: Player = sender as Player
 
-        when (item) {
+        when(item) {
             CustomItems.ROCKET_LAUNCHER -> {
                 createRocketLauncher(player)
             }
@@ -83,7 +83,7 @@ class GiveCustomItem : BaseCommand {
         teleportSpoonMeta.displayName(Component.text("Aspect of the Void").color(TextColor.fromHexString("#992af5")).decoration(TextDecoration.ITALIC, false))
         teleportSpoonMeta.isUnbreakable = true
         teleportSpoonMeta.addEnchant(Enchantment.MENDING, 1, false)
-        teleportSpoonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE)
+        teleportSpoonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES)
         teleportSpoon.itemMeta = teleportSpoonMeta
         player.inventory.addItem(ItemStack(teleportSpoon))
         player.sendMessage(Component.text("Received an ${CustomItems.ASPECT_OF_THE_VOID}").color(NamedTextColor.GREEN))
