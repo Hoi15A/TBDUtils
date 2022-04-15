@@ -17,8 +17,12 @@ import kotlin.math.sin
 @Suppress("unused")
 class ParticleTest : BaseCommand {
     private val particleImage: ParticleImage
+
     init {
-        val resource = javaClass.classLoader.getResourceAsStream("particles/sprite.json")
+        //val resource = javaClass.classLoader.getResourceAsStream("particles/heart.png")
+        val resource = javaClass.classLoader.getResourceAsStream("particles/flux.png")
+        //val resource = javaClass.classLoader.getResourceAsStream("particles/discord.png")
+        println(resource)
         particleImage = ParticleImage(resource!!)
     }
 
@@ -30,15 +34,11 @@ class ParticleTest : BaseCommand {
             override fun run() {
                 if (counter == 20) this.cancel()
                 // spawnParticles(sender, counter)
-                spawnImageParticle(sender)
+                particleImage.displayForPlayer(sender)
                 counter++
             }
         }.runTaskTimer(Plugin.plugin, 20, 10)
 
-    }
-
-    private fun spawnImageParticle(player: Player) {
-        particleImage.displayForPlayer(player)
     }
 
     private fun spawnParticles(player: Player, c: Int) {
