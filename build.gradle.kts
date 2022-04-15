@@ -22,7 +22,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly("de.maxhenkel.voicechat:voicechat-api:2.2.19")
     compileOnly("com.discordsrv:discordsrv:1.25.0")
@@ -30,6 +29,7 @@ dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("cloud.commandframework:cloud-paper:1.6.2")
     implementation("cloud.commandframework:cloud-annotations:1.6.2")
+    implementation("com.sksamuel.scrimage:scrimage-core:4.0.30")
 }
 
 java {
