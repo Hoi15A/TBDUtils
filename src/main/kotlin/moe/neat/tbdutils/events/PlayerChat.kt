@@ -1,5 +1,6 @@
 package moe.neat.tbdutils.events
 
+import moe.neat.tbdutils.commands.ToggleVisualDialogue
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.GameMode
@@ -16,37 +17,38 @@ import org.bukkit.scheduler.BukkitRunnable
 class PlayerChat : Listener {
     @EventHandler
     private fun onChat(e : PlayerChatEvent) {
-        //TODO: Add a toggle for this
-        if (e.player.name == "Byrtrum" && e.player.gameMode != GameMode.SPECTATOR) {
-            val spawnDialogueLocX = e.player.location.x
-            val spawnDialogueLocY = e.player.location.y + 1.25
-            val spawnDialogueLocZ = e.player.location.z
-            val spawnDialogueLoc = Location(e.player.world, spawnDialogueLocX, spawnDialogueLocY, spawnDialogueLocZ)
-            val dialogue = e.player.location.world.spawn(spawnDialogueLoc, ArmorStand::class.java)
-            dialogue.isInvisible = true
-            dialogue.isSmall = true
-            dialogue.isInvulnerable = true
-            dialogue.setGravity(false)
-            dialogue.addScoreboardTag("dialogue")
-            dialogue.customName(Component.text(e.message)
-                .decoration(TextDecoration.BOLD, true))
-            dialogue.isCustomNameVisible = true
+        if(ToggleVisualDialogue.visualDialogue) {
+            if (e.player.name == "Byrtrum" && e.player.gameMode != GameMode.SPECTATOR) {
+                val spawnDialogueLocX = e.player.location.x
+                val spawnDialogueLocY = e.player.location.y + 1.25
+                val spawnDialogueLocZ = e.player.location.z
+                val spawnDialogueLoc = Location(e.player.world, spawnDialogueLocX, spawnDialogueLocY, spawnDialogueLocZ)
+                val dialogue = e.player.location.world.spawn(spawnDialogueLoc, ArmorStand::class.java)
+                dialogue.isInvisible = true
+                dialogue.isSmall = true
+                dialogue.isInvulnerable = true
+                dialogue.setGravity(false)
+                dialogue.addScoreboardTag("dialogue")
+                dialogue.customName(Component.text(e.message)
+                    .decoration(TextDecoration.BOLD, true))
+                dialogue.isCustomNameVisible = true
 
-            var i = 0
-            moe.neat.tbdutils.Plugin.plugin.let {
-                object : BukkitRunnable() {
-                    override fun run() {
-                        val playerLocX = e.player.location.x
-                        val playerLocY = e.player.location.y + 1.25
-                        val playerLocZ = e.player.location.z
-                        val playerLoc = Location(e.player.world, playerLocX, playerLocY, playerLocZ)
-                        dialogue.teleport(playerLoc)
-                        i++
-                        if(i == 80) {
-                            dialogue.remove()
+                var i = 0
+                moe.neat.tbdutils.Plugin.plugin.let {
+                    object : BukkitRunnable() {
+                        override fun run() {
+                            val playerLocX = e.player.location.x
+                            val playerLocY = e.player.location.y + 1.25
+                            val playerLocZ = e.player.location.z
+                            val playerLoc = Location(e.player.world, playerLocX, playerLocY, playerLocZ)
+                            dialogue.teleport(playerLoc)
+                            i++
+                            if(i == 80) {
+                                dialogue.remove()
+                            }
                         }
-                    }
-                }.runTaskTimer(it, 0L, 1L)
+                    }.runTaskTimer(it, 0L, 1L)
+                }
             }
         }
     }
