@@ -65,7 +65,7 @@ class PlayerUseAspectOfTheVoid : Listener {
         player.playSound(teleportSound)
 
         if(maxDistance == 80) {
-            player.playSound(etherwarpSound)
+            player.playSound(etherwarpSound, Sound.Emitter.self())
             val sphereLoc = Location(player.location.world, player.location.x, player.location.y, player.location.z)
             val r = 1.5
             run {
@@ -95,7 +95,7 @@ class PlayerUseAspectOfTheVoid : Listener {
     }
 
     @EventHandler
-    private fun onCreatePath(e : PlayerInteractEvent) {
+    private fun onInteract(e : PlayerInteractEvent) {
         if(e.player.inventory.itemInMainHand.type == Material.DIAMOND_SHOVEL || e.player.inventory.itemInOffHand.type == Material.DIAMOND_SHOVEL && e.player.inventory.itemInMainHand.itemMeta.displayName() == Component.text("Aspect of the Void").color(TextColor.fromHexString("#992af5")).decoration(TextDecoration.ITALIC, false) && e.player.inventory.itemInOffHand.itemMeta.displayName() == Component.text("Aspect of the Void").color(TextColor.fromHexString("#992af5")).decoration(TextDecoration.ITALIC, false)) {
             e.isCancelled = true
         }

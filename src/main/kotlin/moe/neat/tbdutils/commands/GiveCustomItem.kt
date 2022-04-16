@@ -39,6 +39,9 @@ class GiveCustomItem : BaseCommand {
             CustomItems.ASPECT_OF_THE_VOID -> {
                 createTeleportSpoon(player)
             }
+            CustomItems.WITHERS_WRATH -> {
+                createWithersWrath(player)
+            }
         }
     }
 
@@ -51,7 +54,7 @@ class GiveCustomItem : BaseCommand {
         rocketLauncherMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES)
         rocketLauncher.itemMeta = rocketLauncherMeta
         player.inventory.addItem(ItemStack(rocketLauncher))
-        player.sendMessage(Component.text("Received a ${CustomItems.ROCKET_LAUNCHER}").color(NamedTextColor.GREEN))
+        player.sendMessage(Component.text("Received ${CustomItems.ROCKET_LAUNCHER}").color(NamedTextColor.GREEN))
     }
 
     private fun createLightningWand(player : Player) {
@@ -62,7 +65,7 @@ class GiveCustomItem : BaseCommand {
         lightningWandMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS)
         lightningWand.itemMeta = lightningWandMeta
         player.inventory.addItem(ItemStack(lightningWand))
-        player.sendMessage(Component.text("Received a ${CustomItems.LIGHTNING_WAND}").color(NamedTextColor.GREEN))
+        player.sendMessage(Component.text("Received ${CustomItems.LIGHTNING_WAND}").color(NamedTextColor.GREEN))
     }
 
     private fun createTeleportBow(player : Player) {
@@ -74,7 +77,7 @@ class GiveCustomItem : BaseCommand {
         teleportBowMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE)
         teleportBow.itemMeta = teleportBowMeta
         player.inventory.addItem(ItemStack(teleportBow))
-        player.sendMessage(Component.text("Received a ${CustomItems.TELEPORT_BOW}").color(NamedTextColor.GREEN))
+        player.sendMessage(Component.text("Received ${CustomItems.TELEPORT_BOW}").color(NamedTextColor.GREEN))
     }
 
     private fun createTeleportSpoon(player : Player) {
@@ -86,13 +89,25 @@ class GiveCustomItem : BaseCommand {
         teleportSpoonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES)
         teleportSpoon.itemMeta = teleportSpoonMeta
         player.inventory.addItem(ItemStack(teleportSpoon))
-        player.sendMessage(Component.text("Received an ${CustomItems.ASPECT_OF_THE_VOID}").color(NamedTextColor.GREEN))
+        player.sendMessage(Component.text("Received ${CustomItems.ASPECT_OF_THE_VOID}").color(NamedTextColor.GREEN))
+    }
+
+    private fun createWithersWrath(player : Player) {
+        val withersWrath = ItemStack(Material.WITHER_ROSE)
+        val withersWrathMeta: ItemMeta = withersWrath.itemMeta
+        withersWrathMeta.displayName(Component.text("Wither's Wrath").color(TextColor.fromHexString("#292929")).decoration(TextDecoration.ITALIC, false))
+        withersWrathMeta.addEnchant(Enchantment.MENDING, 1, false)
+        withersWrathMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS)
+        withersWrath.itemMeta = withersWrathMeta
+        player.inventory.addItem(ItemStack(withersWrath))
+        player.sendMessage(Component.text("Received ${CustomItems.WITHERS_WRATH}").color(NamedTextColor.GREEN))
     }
 
     enum class CustomItems {
         ROCKET_LAUNCHER,
         LIGHTNING_WAND,
         TELEPORT_BOW,
-        ASPECT_OF_THE_VOID
+        ASPECT_OF_THE_VOID,
+        WITHERS_WRATH
     }
 }
