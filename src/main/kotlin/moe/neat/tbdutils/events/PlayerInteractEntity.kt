@@ -1,9 +1,10 @@
 package moe.neat.tbdutils.events
 
 import de.tr7zw.nbtapi.NBTItem
+import moe.neat.tbdutils.util.EasterScoreboard
 import moe.neat.tbdutils.util.LocationArrayDataType
-import org.bukkit.Material
-import org.bukkit.NamespacedKey
+import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.*
 import org.bukkit.entity.ArmorStand
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -13,18 +14,17 @@ import org.bukkit.inventory.EquipmentSlot
 
 @Suppress("unused")
 class PlayerInteractEntity : Listener {
+    private val mm = MiniMessage.miniMessage()
 
     @EventHandler
     private fun onInteractEntity(e: PlayerInteractAtEntityEvent) {
         val entity = e.rightClicked
         if (entity is ArmorStand) {
-            e.player.sendMessage("right clicked armor stand")
 
             val headItem = entity.getItem(EquipmentSlot.HEAD)
             if (headItem.type != Material.AIR) {
                 val nItem = NBTItem(headItem)
                 if (nItem.getBoolean("isEasterEgg")) {
-                    e.player.sendMessage("Easter egg")
 
                     val data = e.player.persistentDataContainer.getOrDefault(
                         NamespacedKey.fromString("tbd:easter_eggs_collected")!!,
@@ -34,7 +34,11 @@ class PlayerInteractEntity : Listener {
 
                     var isDuplicate = false
                     for (loc in data) {
-                        if (e.rightClicked.location == loc) {
+                        println("${e.rightClicked.location} - $loc")
+                        if (e.rightClicked.location.x == loc.x &&
+                            e.rightClicked.location.y == loc.y &&
+                            e.rightClicked.location.z == loc.z) {
+                            println("dupe")
                             isDuplicate = true
                             break
                         }
@@ -49,6 +53,33 @@ class PlayerInteractEntity : Listener {
                             LocationArrayDataType(),
                             newData.toTypedArray()
                         )
+
+                        val eggLocation = e.rightClicked.location
+                        eggLocation.y = eggLocation.y + 1.5
+
+                        e.player.world.spawnParticle(
+                            Particle.VILLAGER_HAPPY,
+                            eggLocation,
+                            25,
+                            0.5,
+                            0.5,
+                            0.5
+                        )
+
+                        e.player.world.playSound(
+                            eggLocation,
+                            Sound.ENTITY_PLAYER_LEVELUP,
+                            1f,
+                            1f
+                        )
+
+                        Bukkit.getServer().sendMessage(
+                            mm.deserialize("<color:blue>${e.player.name}</color><gradient:dark_green:yellow> found an easter egg!</gradient>")
+                        )
+
+                        EasterScoreboard.setPlayerEggs(e.player, data.size + 1)
+                    } else {
+                        e.player.sendMessage(mm.deserialize("<gradient:red:gold>You've already found this egg!</gradient>"))
                     }
                 }
             }
