@@ -16,7 +16,7 @@ import org.bukkit.entity.Player
 class Easter : BaseCommand {
 
     @CommandMethod("tag-egg")
-    @CommandPermission("tbdutils.command.unobtanium")
+    @CommandPermission("tbdutils.command.easter.tagegg")
     fun tagEgg(sender: Player) {
         if (sender.inventory.itemInMainHand.type == Material.PLAYER_HEAD) {
             val nItem = NBTItem(sender.inventory.itemInMainHand)
@@ -28,7 +28,7 @@ class Easter : BaseCommand {
     }
 
     @CommandMethod("clear-egg-data <player>")
-    @CommandPermission("tbdutils.command.unobtanium")
+    @CommandPermission("tbdutils.command.easter.cleareggdata")
     fun clearEggData(sender: Player, @Argument("player") player: Player) {
         sender.sendMessage(Component.text("Cleared ${player.name}'s egg data").color(NamedTextColor.BLUE))
         player.persistentDataContainer.set(
