@@ -23,24 +23,22 @@ class GiveCustomItem : BaseCommand {
     @CommandMethod("customitem <item>")
     @CommandDescription("Gives the executor the custom item specified")
     @CommandPermission("tbdutils.command.customitem")
-    fun customItem(sender: CommandSender, @Argument("item") item: CustomItems) {
-        val player: Player = sender as Player
-
+    fun customItem(sender: Player, @Argument("item") item: CustomItems) {
         when(item) {
             CustomItems.ROCKET_LAUNCHER -> {
-                createRocketLauncher(player)
+                createRocketLauncher(sender)
             }
             CustomItems.LIGHTNING_WAND -> {
-                createLightningWand(player)
+                createLightningWand(sender)
             }
             CustomItems.TELEPORT_BOW -> {
-                createTeleportBow(player)
+                createTeleportBow(sender)
             }
             CustomItems.ASPECT_OF_THE_VOID -> {
-                createTeleportSpoon(player)
+                createTeleportSpoon(sender)
             }
             CustomItems.WITHERS_WRATH -> {
-                createWithersWrath(player)
+                createWithersWrath(sender)
             }
         }
     }
