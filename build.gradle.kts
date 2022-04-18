@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "moe.neat"
-version = "1.5-SNAPSHOT"
+version = "1.6-SNAPSHOT"
 
 repositories {
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
@@ -14,6 +14,10 @@ repositories {
     maven {
         name = "m2-dv8tion"
         url = uri("https://m2.dv8tion.net/releases")
+    }
+    maven {
+        name = "CodeMC"
+        url = uri("https://repo.codemc.org/repository/maven-public/")
     }
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
@@ -28,6 +32,7 @@ dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("cloud.commandframework:cloud-paper:1.6.2")
     implementation("cloud.commandframework:cloud-annotations:1.6.2")
+    implementation("de.tr7zw:item-nbt-api-plugin:2.9.2")
 }
 
 java {
