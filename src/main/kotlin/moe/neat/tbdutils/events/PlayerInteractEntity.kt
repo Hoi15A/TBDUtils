@@ -34,11 +34,9 @@ class PlayerInteractEntity : Listener {
 
                     var isDuplicate = false
                     for (loc in data) {
-                        println("${e.rightClicked.location} - $loc")
                         if (e.rightClicked.location.x == loc.x &&
                             e.rightClicked.location.y == loc.y &&
                             e.rightClicked.location.z == loc.z) {
-                            println("dupe")
                             isDuplicate = true
                             break
                         }
