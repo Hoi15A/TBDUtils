@@ -94,6 +94,6 @@ class Plugin : JavaPlugin() {
     }
 
     companion object {
-        val plugin : Plugin get() = Bukkit.getPluginManager().getPlugin("TBDUtils") as Plugin
+        val plugin: Plugin get() = Bukkit.getPluginManager().getPlugin("TBDUtils") as Plugin
     }
 }

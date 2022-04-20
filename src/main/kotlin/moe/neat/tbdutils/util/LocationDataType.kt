@@ -32,7 +32,7 @@ class LocationDataType : PersistentDataType<PersistentDataContainer, Location> {
     }
 
     override fun toPrimitive(complex: Location, context: PersistentDataAdapterContext): PersistentDataContainer {
-        val container =  context.newPersistentDataContainer()
+        val container = context.newPersistentDataContainer()
         container.set(keyWorld, PersistentDataType.STRING, complex.world.name)
         container.set(keyX, PersistentDataType.DOUBLE, complex.x)
         container.set(keyY, PersistentDataType.DOUBLE, complex.y)

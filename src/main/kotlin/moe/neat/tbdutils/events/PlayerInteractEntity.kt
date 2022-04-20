@@ -2,9 +2,9 @@ package moe.neat.tbdutils.events
 
 import de.tr7zw.nbtapi.NBTItem
 import github.scarsz.discordsrv.DiscordSRV
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 import moe.neat.tbdutils.util.EasterScoreboard
 import moe.neat.tbdutils.util.LocationArrayDataType
-import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.entity.ArmorStand
@@ -38,7 +38,8 @@ class PlayerInteractEntity : Listener {
                     for (loc in data) {
                         if (e.rightClicked.location.x == loc.x &&
                             e.rightClicked.location.y == loc.y &&
-                            e.rightClicked.location.z == loc.z) {
+                            e.rightClicked.location.z == loc.z
+                        ) {
                             isDuplicate = true
                             break
                         }
@@ -79,7 +80,11 @@ class PlayerInteractEntity : Listener {
 
                         val embed = EmbedBuilder()
                             .setColor(0xf898c0)
-                            .setAuthor("${e.player.name} found an easter egg!", null, "https://crafatar.com/avatars/${e.player.uniqueId}")
+                            .setAuthor(
+                                "${e.player.name} found an easter egg!",
+                                null,
+                                "https://crafatar.com/avatars/${e.player.uniqueId}"
+                            )
                             .build()
                         DiscordSRV.getPlugin().mainTextChannel.sendMessageEmbeds(embed).queue()
 

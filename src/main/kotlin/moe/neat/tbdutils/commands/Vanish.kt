@@ -33,7 +33,8 @@ class Vanish : BaseCommand {
                     players.sendMessage(
                         sender.displayName()
                             .append(Component.text(" has just vanished!"))
-                            .color(NamedTextColor.GREEN))
+                            .color(NamedTextColor.GREEN)
+                    )
                 }
             }
 

@@ -14,8 +14,10 @@ object EasterScoreboard {
 
     init {
         if (objective == null) {
-            objective = scoreboard.registerNewObjective(objectiveName, "dummy",
-                mm.deserialize("<gradient:dark_green:yellow>Easter Eggs Found</gradient>"))
+            objective = scoreboard.registerNewObjective(
+                objectiveName, "dummy",
+                mm.deserialize("<gradient:dark_green:yellow>Easter Eggs Found</gradient>")
+            )
         }
     }
 
