@@ -1,8 +1,10 @@
 package moe.neat.tbdutils.events
 
 import de.tr7zw.nbtapi.NBTItem
+import github.scarsz.discordsrv.DiscordSRV
 import moe.neat.tbdutils.util.EasterScoreboard
 import moe.neat.tbdutils.util.LocationArrayDataType
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.entity.ArmorStand
@@ -74,6 +76,12 @@ class PlayerInteractEntity : Listener {
                         Bukkit.getServer().sendMessage(
                             mm.deserialize("<color:blue>${e.player.name}</color><gradient:dark_green:yellow> found an easter egg!</gradient>")
                         )
+
+                        val embed = EmbedBuilder()
+                            .setColor(0xf898c0)
+                            .setAuthor("${e.player.name} found an easter egg!", null, "https://crafatar.com/avatars/${e.player.uniqueId}")
+                            .build()
+                        DiscordSRV.getPlugin().mainTextChannel.sendMessageEmbeds(embed).queue()
 
                         EasterScoreboard.setPlayerEggs(e.player, data.size + 1)
                     } else {
