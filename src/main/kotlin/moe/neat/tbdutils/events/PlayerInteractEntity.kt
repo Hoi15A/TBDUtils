@@ -83,7 +83,7 @@ class PlayerInteractEntity : Listener {
                             .setAuthor(
                                 "${e.player.name} found an easter egg!",
                                 null,
-                                "https://crafatar.com/avatars/${e.player.uniqueId}"
+                                "https://crafatar.com/avatars/${e.player.uniqueId}?overlay=true"
                             )
                             .build()
                         DiscordSRV.getPlugin().mainTextChannel.sendMessageEmbeds(embed).queue()
