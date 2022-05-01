@@ -1,6 +1,6 @@
 package moe.neat.tbdutils.events
 
-import moe.neat.tbdutils.commands.ToggleVisualDialogue
+import moe.neat.tbdutils.commands.VisualDialogue
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.GameMode
@@ -15,9 +15,11 @@ import org.bukkit.scheduler.BukkitRunnable
 
 @Suppress("unused","deprecation")
 class PlayerChat : Listener {
+    private val visualDialogue = VisualDialogue()
+
     @EventHandler
     private fun onChat(e : PlayerChatEvent) {
-        if(ToggleVisualDialogue.visualDialogue) {
+        if(VisualDialogue.visualDialogue) {
             if (e.player.name == "Byrtrum" && e.player.gameMode != GameMode.SPECTATOR) {
                 val spawnDialogueLocX = e.player.location.x
                 val spawnDialogueLocY = e.player.location.y + 1.25
@@ -29,8 +31,7 @@ class PlayerChat : Listener {
                 dialogue.isInvulnerable = true
                 dialogue.setGravity(false)
                 dialogue.addScoreboardTag("dialogue")
-                dialogue.customName(Component.text(e.message)
-                    .decoration(TextDecoration.BOLD, true))
+                dialogue.customName(Component.text(e.message).decoration(TextDecoration.BOLD, true))
                 dialogue.isCustomNameVisible = true
 
                 var i = 0
