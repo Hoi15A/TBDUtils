@@ -33,6 +33,6 @@ object EasterScoreboard {
             }
         }
 
-        return map.toList().sortedBy { (_, value) -> value }.toMap()
+        return map.toList().sortedBy { (_, value) -> value }.reversed().toMap()
     }
 }
