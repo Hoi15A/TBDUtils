@@ -17,6 +17,7 @@ import org.bukkit.inventory.EquipmentSlot
 @Suppress("unused")
 class PlayerInteractEntity : Listener {
     private val mm = MiniMessage.miniMessage()
+    private val easterEnabled = false
 
     @EventHandler
     private fun onInteractEntity(e: PlayerInteractAtEntityEvent) {
@@ -27,6 +28,11 @@ class PlayerInteractEntity : Listener {
             if (headItem.type != Material.AIR) {
                 val nItem = NBTItem(headItem)
                 if (nItem.getBoolean("isEasterEgg")) {
+
+                    if (!easterEnabled) {
+                        e.player.sendMessage(mm.deserialize("<gradient:#ff6bb0:#7821ad>The egg hunt is over, thank you for participating!</gradient>"))
+                        return
+                    }
 
                     val data = e.player.persistentDataContainer.getOrDefault(
                         NamespacedKey.fromString("tbd:easter_eggs_collected")!!,

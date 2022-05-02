@@ -8,12 +8,14 @@ import moe.neat.tbdutils.util.EasterScoreboard
 import moe.neat.tbdutils.util.LocationArrayDataType
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 
 @Suppress("unused")
 class Easter : BaseCommand {
+    val mm = MiniMessage.miniMessage()
 
     @CommandMethod("tag-egg")
     @CommandPermission("tbdutils.command.easter.tagegg")
@@ -37,5 +39,18 @@ class Easter : BaseCommand {
             arrayOf()
         )
         EasterScoreboard.setPlayerEggs(player, 0)
+    }
+
+    @CommandMethod("egg-scoreboard")
+    @CommandPermission("tbdutils.command.easter.getscoreboard")
+    fun getEggScoreboard(sender: Player) {
+        val scores = EasterScoreboard.getAllScores()
+        var scoreboardText = "TBD EASTER EGG SCOREBOARD\n\nName: Count\n\n"
+
+        scores.forEach { (name, score) ->
+            scoreboardText += "$name: $score\n"
+        }
+
+        sender.sendMessage(mm.deserialize("<click:copy_to_clipboard:'$scoreboardText'><color:#4c76f5><u>Click here to copy the scoreboard to your clipboard!<u></color></click>"))
     }
 }

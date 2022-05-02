@@ -24,4 +24,13 @@ object EasterScoreboard {
     fun setPlayerEggs(player: Player, count: Int) {
         objective?.getScore(player)!!.score = count
     }
+
+    fun getAllScores() : Map<String, Int> {
+        val map = mutableMapOf<String, Int>()
+        Bukkit.getOfflinePlayers().forEach {
+            map[it.name!!] = objective?.getScore(it)!!.score
+        }
+
+        return map.toList().sortedBy { (_, value) -> value }.toMap()
+    }
 }
