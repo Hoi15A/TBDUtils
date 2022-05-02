@@ -28,7 +28,9 @@ object EasterScoreboard {
     fun getAllScores() : Map<String, Int> {
         val map = mutableMapOf<String, Int>()
         Bukkit.getOfflinePlayers().forEach {
-            map[it.name!!] = objective?.getScore(it)!!.score
+            if (objective?.getScore(it)?.isScoreSet == true) {
+                map[it.name!!] = objective?.getScore(it)!!.score
+            }
         }
 
         return map.toList().sortedBy { (_, value) -> value }.toMap()
