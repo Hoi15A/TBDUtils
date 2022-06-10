@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SshConfigs">
-    <configs>
-      <sshConfig authType="OPEN_SSH" host="netcup" id="2fe232b2-9cf2-4136-9ec2-c4b03ee6620f" port="2020" nameFormat="DESCRIPTIVE" username="austin" useOpenSSHConfig="true" />
-    </configs>
-  </component>
-</project>

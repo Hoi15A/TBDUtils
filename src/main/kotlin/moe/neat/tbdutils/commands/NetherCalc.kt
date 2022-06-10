@@ -21,25 +21,35 @@ class NetherCalc : BaseCommand {
         when (sender.world.environment) {
             World.Environment.NORMAL -> {
 
-                sender.sendMessage(mm.deserialize(
-                    "Build a portal in the <#42BB3C>overworld</#42BB3C> at " +
-                            "<#5FBFF9>${loc.blockX} ${loc.blockZ}</#5FBFF9> " +
-                            "and a portal in the <#E5446D>nether</#E5446D> " +
-                            "at <#5FBFF9>${loc.blockX / 8} ${loc.blockZ / 8}</#5FBFF9> " +
-                            "to link them together."
-                ))
+                sender.sendMessage(
+                    mm.deserialize(
+                        "Build a portal in the <#42BB3C>overworld</#42BB3C> at " +
+                                "<#5FBFF9>${loc.blockX} ${loc.blockZ}</#5FBFF9> " +
+                                "and a portal in the <#E5446D>nether</#E5446D> " +
+                                "at <#5FBFF9>${loc.blockX / 8} ${loc.blockZ / 8}</#5FBFF9> " +
+                                "to link them together."
+                    )
+                )
             }
             World.Environment.NETHER -> {
-                sender.sendMessage(mm.deserialize(
-                    "Build a portal in the <#E5446D>nether</#E5446D> at " +
-                            "<#5FBFF9>${loc.blockX} ${loc.blockZ}</#5FBFF9> " +
-                            "and a portal in the <#42BB3C>overworld</#42BB3C> " +
-                            "at <#5FBFF9>${loc.blockX * 8} ${loc.blockZ * 8}</#5FBFF9> " +
-                            "to link them together."
-                ))
+                sender.sendMessage(
+                    mm.deserialize(
+                        "Build a portal in the <#E5446D>nether</#E5446D> at " +
+                                "<#5FBFF9>${loc.blockX} ${loc.blockZ}</#5FBFF9> " +
+                                "and a portal in the <#42BB3C>overworld</#42BB3C> " +
+                                "at <#5FBFF9>${loc.blockX * 8} ${loc.blockZ * 8}</#5FBFF9> " +
+                                "to link them together."
+                    )
+                )
             }
-            World.Environment.THE_END -> sender.sendMessage(Component.text("Not quite sure what you are trying to do there friend, this is the end, but you do you.").color(NamedTextColor.RED))
-            World.Environment.CUSTOM -> sender.sendMessage(Component.text("Where even are you what...\nWell whatever you are doing I don't know where you'd link to so you are on your own.").color(NamedTextColor.RED))
+            World.Environment.THE_END -> sender.sendMessage(
+                Component.text("Not quite sure what you are trying to do there friend, this is the end, but you do you.")
+                    .color(NamedTextColor.RED)
+            )
+            World.Environment.CUSTOM -> sender.sendMessage(
+                Component.text("Where even are you what...\nWell whatever you are doing I don't know where you'd link to so you are on your own.")
+                    .color(NamedTextColor.RED)
+            )
         }
     }
 }

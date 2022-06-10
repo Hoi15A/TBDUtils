@@ -10,9 +10,8 @@ import org.bukkit.event.player.PlayerQuitEvent
 @Suppress("unused")
 class PlayerLeave : Listener {
     @EventHandler
-    private fun onPlayerQuit(e: PlayerQuitEvent)
-    {
-        if(Vanish.vanishedPlayers.contains(e.player.uniqueId)) {
+    private fun onPlayerQuit(e: PlayerQuitEvent) {
+        if (Vanish.vanishedPlayers.contains(e.player.uniqueId)) {
             Vanish.vanishedPlayers.remove(e.player.uniqueId)
             e.quitMessage(Component.text(""))
         }
