@@ -12,8 +12,8 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 
 @Suppress("unused")
-class GetAllPlayTime : BaseCommand {
-    val mm = MiniMessage.miniMessage()
+class PlayTime : BaseCommand {
+    private val mm = MiniMessage.miniMessage()
 
     private val objectiveName = "hc_playTimeShow"
     private val manager = Bukkit.getScoreboardManager()
