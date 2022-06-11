@@ -20,26 +20,28 @@ class PlayTime : BaseCommand {
     private val scoreboard = manager.mainScoreboard
     private var objective = scoreboard.getObjective(objectiveName)
 
-    @CommandMethod("getplaytime")
+    @CommandMethod("playtime")
     @CommandDescription("Gets all entries of play-time of all players.")
     @CommandPermission("tbdutils.command.getplaytime")
     fun getAllPLayTime(sender: CommandSender) {
         sender.sendMessage(Component.text("Attempting to get everyone's play-time...").color(NamedTextColor.GRAY))
         try{
-            sender.sendMessage(mm.deserialize("<click:copy_to_clipboard:'${getAllScores()}'><color:#fefefe><u>Click here to copy all play-times to your clipboard!<u></color></click>"))
+            val scores = getAllScores()
+            var scoreboardText = "TBD EASTER EGG SCOREBOARD\n\nName: Count\n\n"
+            scores.forEach { (name, score) ->
+                scoreboardText += "$name: $score\n"
+            }
+            sender.sendMessage(mm.deserialize("<click:copy_to_clipboard:'${getAllScores()}'><rainbow><u>Click here to copy all play-times to your clipboard!<u></rainbow></click>"))
         } catch(e : Exception) {
             sender.sendMessage(Component.text("An error occurred when trying to get everyone's play-time.").color(NamedTextColor.RED))
         }
     }
 
     private fun getAllScores() : Map<String, Int> {
-        val entries = objective?.scoreboard?.entries
-        var loopCounter = 0
         val map = mutableMapOf<String, Int>()
         Bukkit.getOfflinePlayers().forEach {
-            if (objective?.getScore(entries?.toTypedArray()?.get(loopCounter).toString())?.isScoreSet == true) {
-                map[it.name!!] = objective!!.getScore(entries?.toTypedArray()?.get(loopCounter).toString()).score
-                loopCounter++
+            if (objective?.getScore(it)?.isScoreSet == true) {
+                map[it.name!!] = objective?.getScore(it)!!.score
             }
         }
 
