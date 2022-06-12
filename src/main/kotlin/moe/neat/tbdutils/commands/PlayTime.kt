@@ -22,16 +22,16 @@ class PlayTime : BaseCommand {
 
     @CommandMethod("playtime")
     @CommandDescription("Gets all entries of play-time of all players.")
-    @CommandPermission("tbdutils.command.getplaytime")
+    @CommandPermission("tbdutils.command.playtime")
     fun getAllPLayTime(sender: CommandSender) {
         sender.sendMessage(Component.text("Attempting to get everyone's play-time...").color(NamedTextColor.GRAY))
-        try{
+        try {
             val scores = getAllScores()
-            var scoreboardText = "TBD EASTER EGG SCOREBOARD\n\nName: Count\n\n"
+            var scoreboardText = "TBD PLAY-TIME\n\nName: Time in Minutes\n\n"
             scores.forEach { (name, score) ->
                 scoreboardText += "$name: $score\n"
             }
-            sender.sendMessage(mm.deserialize("<click:copy_to_clipboard:'${getAllScores()}'><rainbow><u>Click here to copy all play-times to your clipboard!<u></rainbow></click>"))
+            sender.sendMessage(mm.deserialize("<click:copy_to_clipboard:'$scoreboardText'><rainbow><u>Click here to copy all play-times to your clipboard!<u></rainbow></click>"))
         } catch(e : Exception) {
             sender.sendMessage(Component.text("An error occurred when trying to get everyone's play-time.").color(NamedTextColor.RED))
         }
