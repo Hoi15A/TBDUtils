@@ -30,8 +30,8 @@ dependencies {
     compileOnly("com.discordsrv:discordsrv:1.25.1")
     implementation("com.github.ReflxctionDev:SimpleHypixelAPI:1.0.9-BETA")
     implementation("org.reflections:reflections:0.10.2")
-    implementation("cloud.commandframework:cloud-paper:1.7.0-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-annotations:1.7.0-SNAPSHOT")
+    implementation("cloud.commandframework:cloud-paper:1.7.0")
+    implementation("cloud.commandframework:cloud-annotations:1.7.0")
     implementation("de.tr7zw:item-nbt-api-plugin:2.10.0")
 }
 
