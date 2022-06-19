@@ -1,9 +1,13 @@
 package moe.neat.tbdutils.commands
 
+import moe.neat.tbdutils.Plugin
+
 import cloud.commandframework.annotations.CommandDescription
 import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
-import moe.neat.tbdutils.Plugin
+
+import github.scarsz.discordsrv.DiscordSRV
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -42,6 +46,16 @@ class Vanish : BaseCommand {
             vanishedActionBarText(sender)
             sender.sendMessage(Component.text("You are now vanished!").color(NamedTextColor.GREEN))
 
+            val embed = EmbedBuilder()
+                .setColor(java.awt.Color.red)
+                .setAuthor(
+                    "${sender.player?.name} left the server",
+                    null,
+                    "https://crafatar.com/avatars/${sender.player?.uniqueId}?overlay=true"
+                )
+                .build()
+            DiscordSRV.getPlugin().mainTextChannel.sendMessageEmbeds(embed).queue()
+
         } else {
             for (players in Bukkit.getServer().onlinePlayers) {
                 players.showPlayer(Plugin.plugin, sender)
@@ -62,6 +76,16 @@ class Vanish : BaseCommand {
 
             vanishedPlayers.remove(sender.uniqueId)
             sender.sendMessage(Component.text("You are no longer vanished!").color(NamedTextColor.GREEN))
+
+            val embed = EmbedBuilder()
+                .setColor(java.awt.Color.green)
+                .setAuthor(
+                    "${sender.player?.name} joined the server",
+                    null,
+                    "https://crafatar.com/avatars/${sender.player?.uniqueId}?overlay=true"
+                )
+                .build()
+            DiscordSRV.getPlugin().mainTextChannel.sendMessageEmbeds(embed).queue()
         }
     }
 
