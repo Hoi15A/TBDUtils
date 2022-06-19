@@ -19,6 +19,7 @@ repositories {
         name = "CodeMC"
         url = uri("https://repo.codemc.org/repository/maven-public/")
     }
+    maven { url = uri("https://repo.hypixel.net/repository/Hypixel/") }
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
 }
@@ -28,7 +29,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
     compileOnly("de.maxhenkel.voicechat:voicechat-api:2.2.19")
     compileOnly("com.discordsrv:discordsrv:1.25.1")
-    implementation("com.github.ReflxctionDev:SimpleHypixelAPI:1.0.9-BETA")
+    implementation("net.hypixel:hypixel-api-transport-apache:4.2")
     implementation("org.reflections:reflections:0.10.2")
     implementation("cloud.commandframework:cloud-paper:1.7.0")
     implementation("cloud.commandframework:cloud-annotations:1.7.0")
