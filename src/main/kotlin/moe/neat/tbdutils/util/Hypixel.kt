@@ -1,13 +1,13 @@
 package moe.neat.tbdutils.util
 
+import net.hypixel.api.HypixelAPI
+import net.hypixel.api.apache.ApacheHttpClient
+import net.hypixel.api.reply.PlayerReply
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.entity.Player
 import java.util.*
-import net.hypixel.api.HypixelAPI
-import net.hypixel.api.apache.ApacheHttpClient
-import net.hypixel.api.reply.PlayerReply
 
 /**
  * Utilities relating to Hypixel using the [HypixelAPI]
@@ -19,12 +19,7 @@ class Hypixel(apiKey: String) {
     private val playerCache = mutableMapOf<UUID, PlayerReply.Player>()
     private val mm = MiniMessage.miniMessage()
 
-    private fun getPlayer(player: UUID): PlayerReply.Player {
-        if (playerCache[player] == null) {
-            playerCache[player] = api.getPlayerByUuid(player).get().player
-        }
-        return playerCache[player]!!
-    }
+    private fun getPlayer(player: UUID) = playerCache.getOrPut(player) { api.getPlayerByUuid(player).get().player }
 
     /**
      * Get the formatted display name of a player on Hypixel.
