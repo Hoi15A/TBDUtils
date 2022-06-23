@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import java.util.*
 import java.util.function.Consumer
-import java.util.function.Function
 
 
 @Suppress("unused")
@@ -29,11 +28,9 @@ class Plugin : JavaPlugin() {
 
     private fun setupCommands() {
         val commandManager: PaperCommandManager<CommandSender> = try {
-            PaperCommandManager(
+            PaperCommandManager.createNative(
                 this,
-                CommandExecutionCoordinator.simpleCoordinator(),
-                Function.identity(),
-                Function.identity()
+                CommandExecutionCoordinator.simpleCoordinator()
             )
         } catch (e: Exception) {
             logger.severe("Failed to initialize the command manager")

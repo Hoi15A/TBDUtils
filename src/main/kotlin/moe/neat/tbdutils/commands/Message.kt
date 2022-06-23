@@ -9,6 +9,7 @@ import moe.neat.tbdutils.util.Hypixel
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
@@ -97,11 +98,11 @@ class Message : BaseCommand {
         recipient.playSound(Sound.sound(Key.key("minecraft:entity.axolotl.idle_air"), Sound.Source.MASTER, 1f, 1f))
 
         sender.sendMessage(
-            mm.deserialize("<light_purple>To</light_purple> ${mm.serialize(recRank)}<gray>:</gray> <b><light_purple>Boop!</light_purple></b>")
+            mm.deserialize("<light_purple>To</light_purple> <rank><gray>:</gray> <b><light_purple>Boop!</light_purple></b>", Placeholder.component("rank", recRank))
         )
 
         recipient.sendMessage(
-            mm.deserialize("<light_purple>From</light_purple> ${mm.serialize(sendRank)}<gray>:</gray> <b><light_purple>Boop!</light_purple></b>")
+            mm.deserialize("<light_purple>From</light_purple> <rank><gray>:</gray> <b><light_purple>Boop!</light_purple></b>", Placeholder.component("rank", sendRank))
         )
 
         lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
@@ -120,11 +121,11 @@ class Message : BaseCommand {
         val message = mm.stripTags(text.joinToString(" "))
 
         sender.sendMessage(
-            mm.deserialize("<i><yellow>You</yellow> -> ${mm.serialize(recipient.displayName())}: $message</i>")
+            mm.deserialize("<i><yellow>You</yellow> -> <name>: $message</i>", Placeholder.component("name", recipient.displayName()))
         )
 
         recipient.sendMessage(
-            mm.deserialize("<i>${mm.serialize(sender.displayName())} -> <yellow>You</yellow>: $message</i>")
+            mm.deserialize("<i><name> -> <yellow>You</yellow>: $message</i>", Placeholder.component("name", sender.displayName()))
         )
 
         lastConversationPartner[recipient.uniqueId] = LastMessager(sender.uniqueId, System.currentTimeMillis())
