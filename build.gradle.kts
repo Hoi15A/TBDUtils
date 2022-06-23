@@ -36,6 +36,17 @@ dependencies {
     implementation("de.tr7zw:item-nbt-api-plugin:2.10.0")
 }
 
+tasks {
+    shadowJar {
+        val shadePkg = "moe.neat.shade"
+
+        relocate("net.hypixel", "$shadePkg.hypixel")
+        relocate("org.reflections", "$shadePkg.reflections")
+        relocate("cloud.commandframework", "$shadePkg.cloud")
+        relocate("de.tr7zw", "$shadePkg.tr7zw")
+    }
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
