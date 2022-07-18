@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import java.util.*
 import java.util.function.Consumer
-import java.util.function.Function
 
 
 @Suppress("unused")
@@ -29,11 +28,9 @@ class Plugin : JavaPlugin() {
 
     private fun setupCommands() {
         val commandManager: PaperCommandManager<CommandSender> = try {
-            PaperCommandManager(
+            PaperCommandManager.createNative(
                 this,
-                CommandExecutionCoordinator.simpleCoordinator(),
-                Function.identity(),
-                Function.identity()
+                CommandExecutionCoordinator.simpleCoordinator()
             )
         } catch (e: Exception) {
             logger.severe("Failed to initialize the command manager")
@@ -45,7 +42,7 @@ class Plugin : JavaPlugin() {
         commandManager.registerBrigadier()
 
         // Thanks broccolai <3 https://github.com/broccolai/tickets/commit/e8c227abc298d1a34094708a24601d006ec25937
-        commandManager.setCommandSuggestionProcessor { context, strings ->
+        commandManager.commandSuggestionProcessor { context, strings ->
             var input: String = if (context.inputQueue.isEmpty()) {
                 ""
             } else {
@@ -94,6 +91,6 @@ class Plugin : JavaPlugin() {
     }
 
     companion object {
-        val plugin : Plugin get() = Bukkit.getPluginManager().getPlugin("TBDUtils") as Plugin
+        val plugin: Plugin get() = Bukkit.getPluginManager().getPlugin("TBDUtils") as Plugin
     }
 }

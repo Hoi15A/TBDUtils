@@ -1,15 +1,9 @@
 package moe.neat.tbdutils.commands
 
-import cloud.commandframework.annotations.Argument
-import cloud.commandframework.annotations.CommandDescription
-import cloud.commandframework.annotations.CommandMethod
-import cloud.commandframework.annotations.CommandPermission
-import cloud.commandframework.annotations.Flag
-
+import cloud.commandframework.annotations.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
-
 import org.bukkit.entity.Player
 
 @Suppress("unused")
@@ -24,15 +18,17 @@ class InvSee : BaseCommand {
             sender.sendMessage(Component.text("You can already see your $invText, nice try though.").color(NamedTextColor.RED))
         } else {
 
-            Bukkit.getOnlinePlayers().filter { player -> player.hasPermission("tbdutils.command.invsee") && !player.equals(sender) }.forEach {
-                player -> player.sendMessage(
-                    sender.displayName()
-                        .append(Component.text(" is viewing "))
-                        .append(toInvSee.displayName())
-                        .append(Component.text("'s $invText"))
-                        .color(NamedTextColor.BLUE)
-                )
-            }
+            Bukkit.getOnlinePlayers()
+                .filter { player -> player.hasPermission("tbdutils.command.invsee") && !player.equals(sender) }
+                .forEach { player ->
+                    player.sendMessage(
+                        sender.displayName()
+                            .append(Component.text(" is viewing "))
+                            .append(toInvSee.displayName())
+                            .append(Component.text("'s $invText"))
+                            .color(NamedTextColor.BLUE)
+                    )
+                }
 
             sender.sendMessage(
                 Component.text("You have opened ")

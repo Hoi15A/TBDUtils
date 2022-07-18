@@ -31,7 +31,12 @@ class VoidSpeak : BaseCommand {
         }
 
         msgText = msgText.replace("||", "|\u200B|")
-        DiscordSRV.getPlugin().processChatMessage(sender, "<a:enchantment_tbd:957610364340686888>: ${GalacticAlphabet.translateToGalactic(msgText)}\n<:translate_tbd:957610363518586895>: ||${msgText}||", DiscordSRV.getPlugin().mainChatChannel, false)
+        DiscordSRV.getPlugin().processChatMessage(
+            sender,
+            "<a:enchantment_tbd:957610364340686888>: ${GalacticAlphabet.translateToGalactic(msgText)}\n<:translate_tbd:957610363518586895>: ||${msgText}||",
+            DiscordSRV.getPlugin().mainChatChannel,
+            false
+        )
     }
 
 }
