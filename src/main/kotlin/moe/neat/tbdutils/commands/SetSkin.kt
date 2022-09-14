@@ -1,9 +1,6 @@
 package moe.neat.tbdutils.commands
 
-import cloud.commandframework.annotations.Argument
-import cloud.commandframework.annotations.CommandDescription
-import cloud.commandframework.annotations.CommandMethod
-import cloud.commandframework.annotations.CommandPermission
+import cloud.commandframework.annotations.*
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
@@ -26,12 +23,12 @@ import java.net.URL
 @Suppress("unused")
 class SetSkin : BaseCommand {
     private val successSound: Sound = Sound.sound(Key.key("entity.mooshroom.convert"), Sound.Source.MASTER, 1f, 1f)
-    private val successDisplayMessage: Component = Component.text("Something feels... different?").color(TextColor.fromHexString("#8F29E3"))
+    private val successDisplayMessage: Component = Component.text("✦ Something feels... different? ✦").color(TextColor.fromHexString("#8F29E3"))
 
     @CommandMethod("setskin <player> <skin>")
     @CommandDescription("Allows skin modification.")
     @CommandPermission("tbdutils.command.setskin")
-    fun skin(sender : Player, @Argument("player") player : Player, @Argument("skin") skin : String) {
+    fun skin(sender : Player, @Argument("player") player : Player, @Argument("skin") skin : String, @Flag("silent") isSilent: Boolean) {
         try {
             sender.sendMessage(Component.text("Attempting to change ${player.name}'s skin to ${skin}'s skin...").color(NamedTextColor.GRAY))
             setPlayerSkin(player, skin)
@@ -45,9 +42,10 @@ class SetSkin : BaseCommand {
                             .append(Component.text(" changed ${player.name}'s skin to ${skin}'s skin.")).color(NamedTextColor.BLUE)
                     )
                 }
-
-            player.sendMessage(successDisplayMessage)
-            player.playSound(successSound)
+            if(!isSilent) {
+                player.sendMessage(successDisplayMessage)
+                player.playSound(successSound)
+            }
         } catch(e : Exception) {
             sender.sendMessage(Component.text("An error occurred when attempting to change a player's skin.").color(NamedTextColor.RED))
             e.printStackTrace()
