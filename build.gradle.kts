@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.6.20"
-    kotlin("plugin.serialization") version "1.6.20"
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.20"
     java
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -27,16 +27,16 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
-    compileOnly("de.maxhenkel.voicechat:voicechat-api:2.2.19")
-    compileOnly("com.discordsrv:discordsrv:1.25.1")
-    implementation("net.hypixel:hypixel-api-transport-apache:4.2")
+    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT")
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:2.2.22")
+    compileOnly("com.discordsrv:discordsrv:1.26.0")
+    implementation("net.hypixel:hypixel-api-transport-apache:4.2.1")
     implementation("org.reflections:reflections:0.10.2")
 
-    implementation("cloud.commandframework:cloud-paper:1.7.0")
-    implementation("cloud.commandframework:cloud-annotations:1.7.0")
+    implementation("cloud.commandframework:cloud-paper:1.7.1")
+    implementation("cloud.commandframework:cloud-annotations:1.7.1")
     implementation("de.tr7zw:item-nbt-api-plugin:2.10.0")
-    implementation("com.sksamuel.scrimage:scrimage-core:4.0.30")
+    implementation("com.sksamuel.scrimage:scrimage-core:4.0.32")
 }
 
 tasks {
