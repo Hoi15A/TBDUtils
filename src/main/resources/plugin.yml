@@ -1,9 +1,7 @@
-main: moe.neat.tbdutils.Plugin
 name: TBDUtils
-version: 1.7
-api-version: "1.19"
+version: 2.0
+main: computer.austins.tbdutils.TBDUtils
+description: Various utilities & enhancements for TBD
 authors: ["Austin Albrecht", "Byrt"]
-description: "General utilities for TBD"
-depend:
-  - voicechat
-  - DiscordSRV
+website: https://austins.computer
+api-version: '1.20'

@@ -1,32 +1,25 @@
-package moe.neat.tbdutils
+package computer.austins.tbdutils
 
-import cloud.commandframework.annotations.AnnotationParser
 import cloud.commandframework.execution.CommandExecutionCoordinator
-import cloud.commandframework.meta.SimpleCommandMeta
 import cloud.commandframework.paper.PaperCommandManager
-import de.maxhenkel.voicechat.api.BukkitVoicechatService
-import moe.neat.tbdutils.commands.BaseCommand
-import moe.neat.tbdutils.voice.TBDVoiceChatPlugin
+import computer.austins.tbdutils.command.BaseCommand
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import java.util.*
-import java.util.function.Consumer
-
 
 @Suppress("unused")
-class Plugin : JavaPlugin() {
-
+class TBDUtils : JavaPlugin() {
     override fun onEnable() {
-        saveDefaultConfig()
-        server.servicesManager.load(BukkitVoicechatService::class.java)?.registerPlugin(TBDVoiceChatPlugin())
-        setupCommands()
-        setupEventListeners()
+        registerCommands()
+        registerEvents()
+        logger.info("TBDUtils enabled")
     }
 
-    private fun setupCommands() {
+    private fun registerCommands() {
+        logger.info("Registering commands")
         val commandManager: PaperCommandManager<CommandSender> = try {
             PaperCommandManager.createNative(
                 this,
@@ -41,7 +34,6 @@ class Plugin : JavaPlugin() {
         commandManager.registerAsynchronousCompletions()
         commandManager.registerBrigadier()
 
-        // Thanks broccolai <3 https://github.com/broccolai/tickets/commit/e8c227abc298d1a34094708a24601d006ec25937
         commandManager.commandSuggestionProcessor { context, strings ->
             var input: String = if (context.inputQueue.isEmpty()) {
                 ""
@@ -59,38 +51,24 @@ class Plugin : JavaPlugin() {
             suggestions
         }
 
-
-        val reflections = Reflections("moe.neat.tbdutils.commands")
+        val reflections = Reflections("computer.austins.tbdutils.command")
         val commands = reflections.getSubTypesOf(BaseCommand::class.java)
-
-        val annotationParser = AnnotationParser(
-            commandManager,
-            CommandSender::class.java
-        ) { SimpleCommandMeta.empty() }
-
-        commands.forEach { command ->
-            run {
-                val instance = command.getConstructor().newInstance()
-                annotationParser.parse(instance)
-            }
+        commands.forEach {
+            it.getConstructor().newInstance().register(commandManager)
         }
     }
 
-    private fun setupEventListeners() {
-        val reflections = Reflections("moe.neat.tbdutils.events")
+    private fun registerEvents() {
+        logger.info("Registering event listeners")
+        val reflections = Reflections("computer.austins.tbdutils.event")
         val listeners = reflections.getSubTypesOf(Listener::class.java)
-
-        listeners.forEach(Consumer { listener: Class<out Listener> ->
-            try {
-                val instance = listener.getConstructor().newInstance()
-                server.pluginManager.registerEvents(instance, this)
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-            }
-        })
+        listeners.forEach { listener: Class<out Listener> ->
+            val instance = listener.getConstructor().newInstance()
+            server.pluginManager.registerEvents(instance, this)
+        }
     }
 
-    companion object {
-        val plugin: Plugin get() = Bukkit.getPluginManager().getPlugin("TBDUtils") as Plugin
-    }
 }
+
+val plugin = Bukkit.getPluginManager().getPlugin("TBDUtils")!!
+val logger = plugin.logger
