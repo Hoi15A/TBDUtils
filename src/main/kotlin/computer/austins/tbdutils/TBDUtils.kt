@@ -1,10 +1,14 @@
 package computer.austins.tbdutils
 
 import cloud.commandframework.execution.CommandExecutionCoordinator
+import cloud.commandframework.extra.confirmation.CommandConfirmationManager
+import cloud.commandframework.meta.CommandMeta
 import cloud.commandframework.paper.PaperCommandManager
 
 import computer.austins.tbdutils.command.BaseCommand
 import computer.austins.tbdutils.util.PluginMessenger
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -14,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Suppress("unused")
 class TBDUtils : JavaPlugin() {
@@ -39,6 +44,7 @@ class TBDUtils : JavaPlugin() {
 
         commandManager.registerAsynchronousCompletions()
         commandManager.registerBrigadier()
+        setupCommandConfirmation(commandManager)
 
         commandManager.commandSuggestionProcessor { context, strings ->
             var input: String = if (context.inputQueue.isEmpty()) {
@@ -71,6 +77,29 @@ class TBDUtils : JavaPlugin() {
         listeners.forEach { listener: Class<out Listener> ->
             val instance = listener.getConstructor().newInstance()
             server.pluginManager.registerEvents(instance, this)
+        }
+    }
+
+    private fun setupCommandConfirmation(commandManager : PaperCommandManager<CommandSender>) {
+        try {
+            val confirmationManager : CommandConfirmationManager<CommandSender> = CommandConfirmationManager(
+                30L, TimeUnit.SECONDS,
+                { context -> context.commandContext.sender.sendMessage(
+                    Component.text("Confirm command ", NamedTextColor.RED).append(
+                        Component.text("'/${context.command}' ", NamedTextColor.GREEN)).append(Component.text("by running ", NamedTextColor.RED)).append(
+                        Component.text("'/confirm' ", NamedTextColor.YELLOW)).append(Component.text("to execute.", NamedTextColor.RED))) },
+                { sender -> sender.sendMessage(Component.text("You do not have any pending commands.", NamedTextColor.RED)) }
+            )
+            confirmationManager.registerConfirmationProcessor(commandManager)
+
+            commandManager.command(commandManager.commandBuilder("confirm")
+                .meta(CommandMeta.DESCRIPTION, "Confirm a pending command.")
+                .handler(confirmationManager.createConfirmationExecutionHandler())
+                .permission("tbdutils.confirm"))
+
+        } catch (e : Exception) {
+            logger.severe("Failed to initialize command confirmation manager.")
+            return
         }
     }
 
