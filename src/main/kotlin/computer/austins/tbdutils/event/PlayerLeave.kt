@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerQuitEvent
 class PlayerLeave : Listener {
     @EventHandler
     private fun onPlayerLeave(e: PlayerQuitEvent) {
-        e.quitMessage(null)
-        Chat.leaveMessage(e.player)
+        e.quitMessage(Chat.quitMessage(e.player))
     }
 }

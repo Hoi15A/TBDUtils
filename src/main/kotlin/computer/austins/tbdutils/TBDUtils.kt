@@ -2,12 +2,17 @@ package computer.austins.tbdutils
 
 import cloud.commandframework.execution.CommandExecutionCoordinator
 import cloud.commandframework.paper.PaperCommandManager
+
 import computer.austins.tbdutils.command.BaseCommand
+import computer.austins.tbdutils.util.PluginMessenger
+
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
+
 import org.reflections.Reflections
+
 import java.util.*
 
 @Suppress("unused")
@@ -15,18 +20,19 @@ class TBDUtils : JavaPlugin() {
     override fun onEnable() {
         registerCommands()
         registerEvents()
-        logger.info("TBDUtils enabled")
+        registerPluginMessegers()
+        logger.info("TBDUtils enabled.")
     }
 
     private fun registerCommands() {
-        logger.info("Registering commands")
+        logger.info("Registering commands.")
         val commandManager: PaperCommandManager<CommandSender> = try {
             PaperCommandManager.createNative(
                 this,
                 CommandExecutionCoordinator.simpleCoordinator()
             )
         } catch (e: Exception) {
-            logger.severe("Failed to initialize the command manager")
+            logger.severe("Failed to initialize the command manager.")
             server.pluginManager.disablePlugin(this)
             return
         }
@@ -59,7 +65,7 @@ class TBDUtils : JavaPlugin() {
     }
 
     private fun registerEvents() {
-        logger.info("Registering event listeners")
+        logger.info("Registering event listeners.")
         val reflections = Reflections("computer.austins.tbdutils.event")
         val listeners = reflections.getSubTypesOf(Listener::class.java)
         listeners.forEach { listener: Class<out Listener> ->
@@ -68,7 +74,13 @@ class TBDUtils : JavaPlugin() {
         }
     }
 
+    private fun registerPluginMessegers() {
+        logger.info("Registering plugin messegers.")
+        messenger.registerIncomingPluginChannel(this, "minecraft:brand", PluginMessenger())
+    }
+
 }
 
 val plugin = Bukkit.getPluginManager().getPlugin("TBDUtils")!!
+val messenger = Bukkit.getMessenger()
 val logger = plugin.logger

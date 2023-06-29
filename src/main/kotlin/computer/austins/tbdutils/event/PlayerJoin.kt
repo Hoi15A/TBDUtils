@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent
 class PlayerJoin : Listener {
     @EventHandler
     private fun onPlayerJoin(e: PlayerJoinEvent) {
-        e.joinMessage(null)
-        Chat.joinMessage(e.player)
+        e.joinMessage(Chat.joinMessage(e.player))
     }
 }
