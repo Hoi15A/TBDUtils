@@ -14,10 +14,9 @@ import org.bukkit.command.CommandSender
 @Suppress("unused")
 class Announcement : BaseCommand() {
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
-        commandManager.buildAndRegister("announce",
-            argumentDescription("Broadcasts the provided text to all players.")
-        ) {
+        commandManager.buildAndRegister("announce") {
             permission = "tbdutils.command.announce"
+            commandDescription("Broadcasts the provided text to all players.")
 
             meta(CommandConfirmationManager.META_CONFIRMATION_REQUIRED, true)
 
@@ -36,10 +35,9 @@ class Announcement : BaseCommand() {
 @Suppress("unused")
 class RestartAnnouncement : BaseCommand() {
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
-        commandManager.buildAndRegister("announcerestart"
-            , argumentDescription("Broadcasts a server restart announcement to all players.")
-        ) {
+        commandManager.buildAndRegister("announcerestart") {
             permission = "tbdutils.command.announce"
+            commandDescription("Broadcasts a server restart announcement to all players.")
 
             argument(argumentDescription("Time")) {
                 IntegerArgument.builder<CommandSender>("time").withMin(1).withMax(Int.MAX_VALUE).build()

@@ -1,7 +1,7 @@
 package computer.austins.tbdutils.util
 
-import computer.austins.tbdutils.command.lastConversationPartner
 import computer.austins.tbdutils.logger
+import computer.austins.tbdutils.command.lastConversationPartner
 
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
@@ -29,6 +29,8 @@ object Chat {
         )
         .build()
     private val adminMiniMessage = MiniMessage.miniMessage()
+    private const val DEV_PREFIX = "\uD002"
+    private const val ADMIN_PREFIX = "\uD003"
 
     fun globalChat(player : Player, rawComponent : Component) {
         val message = PlainTextComponentSerializer.plainText().serialize(rawComponent)
@@ -84,7 +86,7 @@ object Chat {
     fun broadcastAdmin(component : Component, isSilent : Boolean) {
         val admin = Audience.audience(Bukkit.getOnlinePlayers()).filterAudience { (it as Player).hasPermission("tbdutils.admin") }
         admin.sendMessage(
-            adminMiniMessage.deserialize("<dark_red>[Admin]<reset> ")
+            Component.text("$ADMIN_PREFIX ")
                 .append(component)
         )
         if(!isSilent) { admin.playSound(Sounds.Admin.ADMIN_MESSAGE) }
@@ -93,7 +95,7 @@ object Chat {
     fun broadcastDev(component : Component, isSilent : Boolean) {
         val dev = Audience.audience(Bukkit.getOnlinePlayers()).filterAudience { (it as Player).hasPermission("tbdutils.dev") }
         dev.sendMessage(
-            adminMiniMessage.deserialize("<gold>[Dev]<reset> ")
+            Component.text("$DEV_PREFIX ")
                 .append(component)
         )
         if(!isSilent) { dev.playSound(Sounds.Admin.ADMIN_MESSAGE) }
