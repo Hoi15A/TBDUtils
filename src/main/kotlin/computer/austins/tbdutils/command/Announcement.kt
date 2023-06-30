@@ -1,15 +1,17 @@
 package computer.austins.tbdutils.command
 
-import computer.austins.tbdutils.util.Chat
-
 import cloud.commandframework.arguments.standard.IntegerArgument
 import cloud.commandframework.arguments.standard.StringArgument
 import cloud.commandframework.extra.confirmation.CommandConfirmationManager
 import cloud.commandframework.kotlin.extension.argumentDescription
 import cloud.commandframework.kotlin.extension.buildAndRegister
 import cloud.commandframework.paper.PaperCommandManager
+import computer.austins.tbdutils.util.Notification
+import computer.austins.tbdutils.util.Sounds
+import net.kyori.adventure.title.Title.Times
 
 import org.bukkit.command.CommandSender
+import java.time.Duration
 
 @Suppress("unused")
 class Announcement : BaseCommand() {
@@ -26,7 +28,7 @@ class Announcement : BaseCommand() {
 
             handler {
                 val arg = it.get<String>("text")
-                Chat.broadcast(arg)
+                Notification.announceServer("<yellow><b>Announcement<reset>", arg)
             }
         }
     }
@@ -36,18 +38,30 @@ class Announcement : BaseCommand() {
 class RestartAnnouncement : BaseCommand() {
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.buildAndRegister("announcerestart") {
-            permission = "tbdutils.command.announce"
-            commandDescription("Broadcasts a server restart announcement to all players.")
+            commandManager.buildAndRegister(
+                "announcerestart", argumentDescription("Broadcasts a server restart announcement to all players.")
+            ) {
+                permission = "tbdutils.command.announce"
+                commandDescription("Broadcasts a server restart announcement to all players.")
 
-            argument(argumentDescription("Time")) {
-                IntegerArgument.builder<CommandSender>("time").withMin(1).withMax(Int.MAX_VALUE).build()
-            }
+                argument(argumentDescription("Time")) {
+                    IntegerArgument.builder<CommandSender>("time").withMin(1).withMax(Int.MAX_VALUE).build()
+                }
 
-            handler {
-                val arg = it.get<Int>("time")
-                Chat.broadcastRestart(arg)
+                handler {
+                    val time = it.get<Int>("time")
+                    Notification.announceServer(
+                        "<red><b>Server Restarting<reset>",
+                        "In $time minute${if (time > 1) "s" else ""}.",
+                        Sounds.Admin.RESTART_ANNOUNCEMENT,
+                        Times.times(
+                            Duration.ofSeconds(1.toLong()),
+                            Duration.ofSeconds(3.toLong()),
+                            Duration.ofSeconds(1.toLong())
+                        )
+                    )
+                }
             }
         }
     }
-
 }

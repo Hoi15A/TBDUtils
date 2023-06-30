@@ -10,7 +10,7 @@ import org.bukkit.event.Listener
 @Suppress("unused")
 class PlayerGlobalChatEvent : Listener {
     @EventHandler
-    private fun onChat(e : AsyncChatEvent) {
+    private fun onChat(e: AsyncChatEvent) {
         Chat.globalChat(e.player, e.message())
         e.isCancelled = true
     }

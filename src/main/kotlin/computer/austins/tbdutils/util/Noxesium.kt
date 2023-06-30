@@ -11,7 +11,6 @@ import org.bukkit.entity.Player
 
 import java.util.*
 
-@Suppress("unused")
 object Noxesium {
     private val noxesiumUsers = mutableMapOf<UUID, Int>()
 

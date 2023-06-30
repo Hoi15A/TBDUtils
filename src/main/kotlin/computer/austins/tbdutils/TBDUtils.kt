@@ -83,24 +83,38 @@ class TBDUtils : JavaPlugin() {
         }
     }
 
-    private fun setupCommandConfirmation(commandManager : PaperCommandManager<CommandSender>) {
+    private fun setupCommandConfirmation(commandManager: PaperCommandManager<CommandSender>) {
         try {
-            val confirmationManager : CommandConfirmationManager<CommandSender> = CommandConfirmationManager(
+            val confirmationManager: CommandConfirmationManager<CommandSender> = CommandConfirmationManager(
                 30L, TimeUnit.SECONDS,
-                { context -> context.commandContext.sender.sendMessage(
-                    Component.text("Confirm command ", NamedTextColor.RED).append(
-                        Component.text("'/${context.command}' ", NamedTextColor.GREEN)).append(Component.text("by running ", NamedTextColor.RED)).append(
-                        Component.text("'/confirm' ", NamedTextColor.YELLOW)).append(Component.text("to execute.", NamedTextColor.RED))) },
-                { sender -> sender.sendMessage(Component.text("You do not have any pending commands.", NamedTextColor.RED)) }
+                { context ->
+                    context.commandContext.sender.sendMessage(
+                        Component.text("Confirm command ", NamedTextColor.RED).append(
+                            Component.text("'/${context.command}' ", NamedTextColor.GREEN)
+                        ).append(Component.text("by running ", NamedTextColor.RED)).append(
+                            Component.text("'/confirm' ", NamedTextColor.YELLOW)
+                        ).append(Component.text("to execute.", NamedTextColor.RED))
+                    )
+                },
+                { sender ->
+                    sender.sendMessage(
+                        Component.text(
+                            "You do not have any pending commands.",
+                            NamedTextColor.RED
+                        )
+                    )
+                }
             )
             confirmationManager.registerConfirmationProcessor(commandManager)
 
-            commandManager.command(commandManager.commandBuilder("confirm")
-                .meta(CommandMeta.DESCRIPTION, "Confirm a pending command.")
-                .handler(confirmationManager.createConfirmationExecutionHandler())
-                .permission("tbdutils.confirm"))
+            commandManager.command(
+                commandManager.commandBuilder("confirm")
+                    .meta(CommandMeta.DESCRIPTION, "Confirm a pending command.")
+                    .handler(confirmationManager.createConfirmationExecutionHandler())
+                    .permission("tbdutils.confirm")
+            )
 
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             logger.severe("Failed to initialize command confirmation manager.")
             return
         }
