@@ -12,7 +12,6 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 object Chat {
-
     fun globalChat(player: Player, rawComponent: Component) {
         val message = PlainTextComponentSerializer.plainText().serialize(rawComponent)
 
@@ -20,12 +19,14 @@ object Chat {
         val nonNoxAudience = Audience.audience(Bukkit.getOnlinePlayers().filter{ p : Player -> !Noxesium.isNoxesiumUser(p) })
 
         noxAudience.sendMessage(Noxesium.buildSkullComponent(player.uniqueId, false, 0, 0, 1.0f)
-            .append(allTags.deserialize("<tbdcolour>${player.name}<reset>: ")
-                .append(if(player.hasPermission("tbdutils.group.admin")) {
-                        allTags.deserialize(message)
-                    } else {
-                        restrictedTags.deserialize(message)
-                    }
+            .append(Component.text(" ")
+                .append(allTags.deserialize("<tbdcolour>${player.name}<reset>: ")
+                    .append(if(player.hasPermission("tbdutils.group.admin")) {
+                            allTags.deserialize(message)
+                        } else {
+                            restrictedTags.deserialize(message)
+                        }
+                    )
                 )
             )
         )
@@ -39,22 +40,22 @@ object Chat {
         )
     }
 
-    fun broadcastAdmin(component: Component, isSilent: Boolean) {
+    fun broadcastAdmin(rawMessage : String, isSilent: Boolean) {
         val admin = Audience.audience(Bukkit.getOnlinePlayers())
             .filterAudience { (it as Player).hasPermission("tbdutils.group.admin") }
         admin.sendMessage(
-            allTags.deserialize("<prefix:admin>").append(component)
+            allTags.deserialize("<prefix:admin>").append(allTags.deserialize(rawMessage))
         )
         if (!isSilent) {
             admin.playSound(Sounds.Admin.ADMIN_MESSAGE)
         }
     }
 
-    fun broadcastDev(component: Component, isSilent: Boolean) {
+    fun broadcastDev(rawMessage : String, isSilent: Boolean) {
         val dev = Audience.audience(Bukkit.getOnlinePlayers())
             .filterAudience { (it as Player).hasPermission("tbdutils.group.dev") }
         dev.sendMessage(
-            allTags.deserialize("<prefix:dev>").append(component)
+            allTags.deserialize("<prefix:dev>").append(allTags.deserialize(rawMessage))
         )
         if (!isSilent) {
             dev.playSound(Sounds.Admin.ADMIN_MESSAGE)

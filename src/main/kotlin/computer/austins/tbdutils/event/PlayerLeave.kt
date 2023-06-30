@@ -1,9 +1,10 @@
 package computer.austins.tbdutils.event
 
-import computer.austins.tbdutils.task.IntroductionTask
+import computer.austins.tbdutils.task.EventTask
 import computer.austins.tbdutils.util.Chat
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import computer.austins.tbdutils.util.Noxesium
+
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,6 +22,6 @@ class PlayerLeave : Listener {
             )
         )
         Noxesium.removeNoxesiumUser(e.player)
-        IntroductionTask().stopIntroLoop(e.player)
+        EventTask.stopIntroLoop(e.player)
     }
 }

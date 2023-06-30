@@ -1,7 +1,11 @@
 package computer.austins.tbdutils.event
 
+import computer.austins.tbdutils.plugin
+import computer.austins.tbdutils.task.EventTask
 import computer.austins.tbdutils.util.Chat
+
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -17,5 +21,8 @@ class PlayerJoin : Listener {
                 Placeholder.component("name", e.player.name())
             )
         )
+        if(EventTask.isDowntimeActive) {
+            EventTask.startDowntimeLoop(e.player, plugin)
+        }
     }
 }

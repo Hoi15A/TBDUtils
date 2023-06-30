@@ -20,7 +20,7 @@ object Notification {
         logger.info("Announcement: $subtitle")
 
         val online = Audience.audience(Bukkit.getOnlinePlayers())
-        online.sendMessage(allTags.deserialize("$title: $subtitle"))
+        online.sendMessage(allTags.deserialize("<newline>$title: $subtitle<newline>"))
         online.playSound(sound)
         online.showTitle(
             Title.title(

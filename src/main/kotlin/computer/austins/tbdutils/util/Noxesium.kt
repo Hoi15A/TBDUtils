@@ -46,7 +46,7 @@ object Noxesium {
     * Standard coloured skull params may look like: (uuid, false, 0, 0, 1.0)
     * */
     fun buildSkullComponent(uuid : UUID, isGrayscale : Boolean, advance : Int, ascent : Int, scale : Float) : Component {
-        return Component.score("%NCPH%$uuid,$isGrayscale,$advance,$ascent,$scale", "").append(Component.text(" "))
+        return Component.score("%NCPH%$uuid,$isGrayscale,$advance,$ascent,$scale", "")
     }
 
     fun skullResolver() : TagResolver {
