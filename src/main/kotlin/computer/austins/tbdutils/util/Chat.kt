@@ -2,6 +2,7 @@ package computer.austins.tbdutils.util
 
 import computer.austins.tbdutils.util.Formatting.allTags
 import computer.austins.tbdutils.util.Formatting.restrictedTags
+
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
@@ -21,19 +22,19 @@ object Chat {
         noxAudience.sendMessage(Noxesium.buildSkullComponent(player.uniqueId, false, 0, 0, 1.0f)
             .append(allTags.deserialize("<tbdcolour>${player.name}<reset>: ")
                 .append(if(player.hasPermission("tbdutils.group.admin")) {
-                    allTags.deserialize(message)
-                } else {
-                    restrictedTags.deserialize(message)
-                }
+                        allTags.deserialize(message)
+                    } else {
+                        restrictedTags.deserialize(message)
+                    }
                 )
             )
         )
         nonNoxAudience.sendMessage(allTags.deserialize("<tbdcolour>${player.name}<reset>: ")
             .append(if(player.hasPermission("tbdutils.group.admin")) {
-                allTags.deserialize(message)
-            } else {
-                restrictedTags.deserialize(message)
-            }
+                    allTags.deserialize(message)
+                } else {
+                    restrictedTags.deserialize(message)
+                }
             )
         )
     }
@@ -71,7 +72,7 @@ object Chat {
 
     fun formatMessage(message: String, restricted: Boolean, vararg placeholders: TagResolver): Component {
         val resolvers = mutableListOf<TagResolver>()
-        for (p in placeholders) {
+        for(p in placeholders) {
             resolvers.add(p)
         }
 
