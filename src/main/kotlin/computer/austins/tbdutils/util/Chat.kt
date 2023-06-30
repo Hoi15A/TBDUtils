@@ -22,17 +22,19 @@ import java.util.*
 @Suppress("unused")
 object Chat {
     private val globalMiniMessage = MiniMessage.builder()
+        .tags(Noxesium.skullResolver())
         .tags(TagResolver.builder()
             .resolver(StandardTags.color())
             .resolver(StandardTags.decorations())
             .build()
-        )
-        .build()
-    private val adminMiniMessage = MiniMessage.miniMessage()
-    //TODO: SKULL RESOLVER IS UNFINISHED
-    private val skullMiniMessage = MiniMessage.builder()
-        .tags(TagResolver.resolver("skull", Noxesium::noxesiumSkullTag))
-        .build()
+        ).build()
+    private val adminMiniMessage = MiniMessage.builder()
+        .tags(Noxesium.skullResolver())
+        .tags(TagResolver.builder()
+            .resolver(StandardTags.defaults())
+            .build()
+        ).build()
+
     private const val DEV_PREFIX = "\uD002"
     private const val ADMIN_PREFIX = "\uD003"
 

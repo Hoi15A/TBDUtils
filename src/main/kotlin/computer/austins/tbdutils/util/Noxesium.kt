@@ -3,12 +3,10 @@ package computer.austins.tbdutils.util
 import computer.austins.tbdutils.logger
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.event.HoverEvent
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.Context
 import net.kyori.adventure.text.minimessage.tag.Tag
-import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 import java.util.*
@@ -52,13 +50,11 @@ object Noxesium {
         return Component.score("%NCPH%$uuid,$isGrayscale,$advance,$ascent,$scale", "").append(Component.text(" "))
     }
 
-    //TODO: DOES NOT INSERT SKULL
-    fun noxesiumSkullTag(args : ArgumentQueue, ctx : Context) : Tag {
-        val name = args.popOr("The <skull> tag requires exactly one argument, the skull of the player to get").value()
-        return Tag.styling(
-            NamedTextColor.WHITE,
-            HoverEvent.showText(Component.text("It's $name's player head!"))
-        )
+    fun skullResolver() : TagResolver {
+        return TagResolver.resolver("skull") { args, _ ->
+            val rawName = args.popOr("Name not supplied.")
+            Tag.inserting(buildSkullComponent(Bukkit.getPlayerUniqueId(rawName.toString())!!, false, 0, 0, 1.0f))
+        }
     }
 }
 
