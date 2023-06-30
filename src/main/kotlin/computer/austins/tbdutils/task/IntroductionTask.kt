@@ -51,7 +51,7 @@ class IntroductionTask {
                                 )
                             )
                         )
-                        player.teleport(Location(player.world, 140.5, 200.0, 970.5))
+                        player.teleport(Location(player.world, 140.5, 256.0, 970.5))
                         player.addPotionEffect(PotionEffect(PotionEffectType.SLOW_FALLING, Int.MAX_VALUE, 255, false, false))
                     }
                     if(introTime == 15) {

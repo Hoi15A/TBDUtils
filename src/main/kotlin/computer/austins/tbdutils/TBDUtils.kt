@@ -1,12 +1,15 @@
 package computer.austins.tbdutils
 
+import computer.austins.tbdutils.command.BaseCommand
+import computer.austins.tbdutils.messenger.BrandMessenger
+import computer.austins.tbdutils.messenger.NoxesiumMessenger
+import computer.austins.tbdutils.util.NoxesiumChannel
+
 import cloud.commandframework.execution.CommandExecutionCoordinator
 import cloud.commandframework.extra.confirmation.CommandConfirmationManager
 import cloud.commandframework.meta.CommandMeta
 import cloud.commandframework.paper.PaperCommandManager
 
-import computer.austins.tbdutils.command.BaseCommand
-import computer.austins.tbdutils.util.PluginMessenger
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 
@@ -105,9 +108,9 @@ class TBDUtils : JavaPlugin() {
 
     private fun registerPluginMessegers() {
         logger.info("Registering plugin messegers.")
-        messenger.registerIncomingPluginChannel(this, "minecraft:brand", PluginMessenger())
+        messenger.registerIncomingPluginChannel(this, "minecraft:brand", BrandMessenger())
+        messenger.registerIncomingPluginChannel(this, NoxesiumChannel.NOXESIUM_CLIENT_INFORMATION_CHANNEL.channel, NoxesiumMessenger())
     }
-
 }
 
 val plugin = Bukkit.getPluginManager().getPlugin("TBDUtils")!!

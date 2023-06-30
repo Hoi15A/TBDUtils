@@ -1,7 +1,7 @@
 package computer.austins.tbdutils.util
 
-import computer.austins.tbdutils.logger
 import computer.austins.tbdutils.command.lastConversationPartner
+import computer.austins.tbdutils.logger
 
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
@@ -29,15 +29,30 @@ object Chat {
         )
         .build()
     private val adminMiniMessage = MiniMessage.miniMessage()
+    //TODO: SKULL RESOLVER IS UNFINISHED
+    private val skullMiniMessage = MiniMessage.builder()
+        .tags(TagResolver.resolver("skull", Noxesium::noxesiumSkullTag))
+        .build()
     private const val DEV_PREFIX = "\uD002"
     private const val ADMIN_PREFIX = "\uD003"
 
     fun globalChat(player : Player, rawComponent : Component) {
         val message = PlainTextComponentSerializer.plainText().serialize(rawComponent)
-        Bukkit.broadcast(
-        adminMiniMessage.deserialize("${tbdColour()}${player.name}<reset>: ")
-            .append(
-                if(player.hasPermission("tbdutils.admin")) {
+        val noxAudience = Audience.audience(Bukkit.getOnlinePlayers().filter{ p : Player -> Noxesium.isNoxesiumUser(p) })
+        val nonNoxAudience = Audience.audience(Bukkit.getOnlinePlayers().filter{ p : Player -> !Noxesium.isNoxesiumUser(p) })
+
+        noxAudience.sendMessage(Noxesium.buildSkullComponent(player.uniqueId, false, 0, 0, 1.0f)
+            .append(adminMiniMessage.deserialize("${tbdColour()}${player.name}<reset>: ")
+                .append(if(player.hasPermission("tbdutils.admin")) {
+                        adminMiniMessage.deserialize(message)
+                    } else {
+                        globalMiniMessage.deserialize(message)
+                    }
+                )
+            )
+        )
+        nonNoxAudience.sendMessage(adminMiniMessage.deserialize("${tbdColour()}${player.name}<reset>: ")
+            .append(if(player.hasPermission("tbdutils.admin")) {
                     adminMiniMessage.deserialize(message)
                 } else {
                     globalMiniMessage.deserialize(message)
