@@ -11,6 +11,7 @@ import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.World
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
@@ -48,6 +49,7 @@ object EventTask {
                     }
                     if(introTime == 10) {
                         if(player.name == "Byrt") {
+                            removeDowntimeBox(player.world)
                             Bukkit.dispatchCommand(player, "gamerule doDaylightCycle true")
                             Bukkit.dispatchCommand(player, "gamerule doWeatherCycle true")
                             Bukkit.dispatchCommand(player, "gamerule doInsomnia true")
@@ -63,7 +65,6 @@ object EventTask {
                                 )
                             )
                         )
-                        player.teleport(Location(player.world, 140.5, 256.0, 970.5))
                         player.addPotionEffect(PotionEffect(PotionEffectType.SLOW_FALLING, Int.MAX_VALUE, 255, false, false))
                     }
                     if(introTime == 15) {
@@ -104,7 +105,7 @@ object EventTask {
         }
         player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, kotlin.time.Duration.INFINITE.toInt(DurationUnit.SECONDS), 255, false, false))
         player.addPotionEffect(PotionEffect(PotionEffectType.SATURATION, kotlin.time.Duration.INFINITE.toInt(DurationUnit.SECONDS), 0, false, false))
-        //TELEPORT LOC player.teleport(Location(Bukkit.getWorld("SMP2_the_end"), 0.5, 71.0, -489.5, -180.0f, 15.0f))
+        player.teleport(Location(player.world, 140.5, 256.0, 970.5, 90.0f, 0.0f))
 
         val bukkitRunnable = object: BukkitRunnable() {
             var musicTimer = 0
@@ -127,5 +128,15 @@ object EventTask {
         player.removePotionEffect(PotionEffectType.SATURATION)
         player.stopSound(Sounds.IntroEvent.DOWNTIME_MUSIC)
         downtimeLoopMap.remove(player.uniqueId)?.cancel()
+    }
+
+    fun removeDowntimeBox(world : World) {
+        for(x in 130..152) {
+            for(y in 252..265) {
+                for(z in 965..975) {
+                    world.getBlockAt(x, y, z).type = Material.AIR
+                }
+            }
+        }
     }
 }

@@ -41,29 +41,25 @@ class Announcement : BaseCommand() {
 class RestartAnnouncement : BaseCommand() {
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.buildAndRegister("announcerestart") {
-            commandManager.buildAndRegister(
-                "announcerestart", argumentDescription("Broadcasts a server restart announcement to all players.")
-            ) {
-                permission = "tbdutils.command.announce"
-                commandDescription("Broadcasts a server restart announcement to all players.")
+            permission = "tbdutils.command.announce"
+            commandDescription("Broadcasts a server restart announcement to all players.")
 
-                argument(argumentDescription("Time")) {
-                    IntegerArgument.builder<CommandSender>("time").withMin(1).withMax(Int.MAX_VALUE).build()
-                }
+            argument(argumentDescription("Time")) {
+                IntegerArgument.builder<CommandSender>("time").withMin(1).withMax(Int.MAX_VALUE).build()
+            }
 
-                handler {
-                    val time = it.get<Int>("time")
-                    Notification.announceServer(
-                        "<red><b>Server Restarting<reset>",
-                        "In $time minute${if (time > 1) "s" else ""}.",
-                        Sounds.Admin.RESTART_ANNOUNCEMENT,
-                        Times.times(
-                            Duration.ofSeconds(1.toLong()),
-                            Duration.ofSeconds(3.toLong()),
-                            Duration.ofSeconds(1.toLong())
-                        )
+            handler {
+                val time = it.get<Int>("time")
+                Notification.announceServer(
+                    "<red><b>Server Restarting<reset>",
+                    "In $time minute${if (time > 1) "s" else ""}.",
+                    Sounds.Admin.RESTART_ANNOUNCEMENT,
+                    Times.times(
+                        Duration.ofSeconds(1.toLong()),
+                        Duration.ofSeconds(3.toLong()),
+                        Duration.ofSeconds(1.toLong())
                     )
-                }
+                )
             }
         }
     }
