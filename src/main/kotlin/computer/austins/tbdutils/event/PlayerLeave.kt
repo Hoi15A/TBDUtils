@@ -1,6 +1,5 @@
 package computer.austins.tbdutils.event
 
-import computer.austins.tbdutils.task.EventTask
 import computer.austins.tbdutils.util.Chat
 import computer.austins.tbdutils.util.Noxesium
 
@@ -22,6 +21,5 @@ class PlayerLeave : Listener {
             )
         )
         Noxesium.removeNoxesiumUser(e.player)
-        EventTask.stopIntroLoop(e.player)
     }
 }
