@@ -4,6 +4,7 @@ import computer.austins.tbdutils.command.BaseCommand
 import computer.austins.tbdutils.messenger.BrandMessenger
 import computer.austins.tbdutils.messenger.NoxesiumMessenger
 import computer.austins.tbdutils.util.NoxesiumChannel
+import computer.austins.tbdutils.util.batboat.BatBoatManager
 
 import cloud.commandframework.execution.CommandExecutionCoordinator
 import cloud.commandframework.extra.confirmation.CommandConfirmationManager
@@ -30,6 +31,11 @@ class TBDUtils : JavaPlugin() {
         registerEvents()
         registerPluginMessegers()
         logger.info("TBDUtils enabled.")
+    }
+
+    override fun onDisable() {
+        BatBoatManager.removeAll()
+        logger.info("TBDUtils disabled.")
     }
 
     private fun registerCommands() {
