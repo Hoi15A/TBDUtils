@@ -53,7 +53,7 @@ class RestartAnnouncement : BaseCommand() {
                 Notification.announceServer(
                     "<red><b>Server Restarting<reset>",
                     "In $time minute${if (time > 1) "s" else ""}.",
-                    Sounds.Admin.RESTART_ANNOUNCEMENT,
+                    Sounds.RESTART_ANNOUNCEMENT,
                     Times.times(
                         Duration.ofSeconds(1.toLong()),
                         Duration.ofSeconds(3.toLong()),

@@ -10,8 +10,9 @@ import org.bukkit.Bukkit
 import java.time.Duration
 
 object Notification {
+    /** Sends an announcement to all online players. **/
     fun announceServer(
-        title: String, subtitle: String, sound: Sound = Sounds.Admin.SERVER_ANNOUNCEMENT, times: Times = Times.times(
+        title: String, subtitle: String, sound: Sound = Sounds.SERVER_ANNOUNCEMENT, times: Times = Times.times(
             Duration.ofSeconds(1.toLong()),
             Duration.ofSeconds(6.toLong()),
             Duration.ofSeconds(1.toLong())

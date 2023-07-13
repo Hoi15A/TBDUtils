@@ -29,7 +29,7 @@ class TBDUtils : JavaPlugin() {
     override fun onEnable() {
         registerCommands()
         registerEvents()
-        registerPluginMessegers()
+        registerPluginMessengers()
         logger.info("TBDUtils enabled.")
     }
 
@@ -120,14 +120,14 @@ class TBDUtils : JavaPlugin() {
                     .permission("tbdutils.confirm")
             )
 
-        } catch (e: Exception) {
+        } catch(e : Exception) {
             logger.severe("Failed to initialize command confirmation manager.")
             return
         }
     }
 
-    private fun registerPluginMessegers() {
-        logger.info("Registering plugin messegers.")
+    private fun registerPluginMessengers() {
+        logger.info("Registering plugin messengers.")
         messenger.registerIncomingPluginChannel(this, "minecraft:brand", BrandMessenger())
         messenger.registerIncomingPluginChannel(this, NoxesiumChannel.NOXESIUM_CLIENT_INFORMATION_CHANNEL.channel, NoxesiumMessenger())
     }

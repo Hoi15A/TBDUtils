@@ -17,9 +17,9 @@ class BatBoatCommand : BaseCommand() {
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.buildAndRegister("batboat") {
             permission = "tbdutils.command.batboat.spawn.self"
-            commandDescription("Spawns a BatBoat at the player's location")
+            commandDescription("Spawns a Bat Boat at the player's location")
 
-            argument(argumentDescription("Spawns the BatBoat and attaches the sender as a passenger")) {
+            argument(argumentDescription("Spawns the Bat Boat and attaches the sender as a passenger")) {
                 BooleanArgument.builder<CommandSender>("attach").asOptionalWithDefault("false").build()
             }
 
@@ -32,7 +32,7 @@ class BatBoatCommand : BaseCommand() {
                 if (BatBoatManager.contains(sender.uniqueId)) {
                     Chat.messageAudience(
                         sender,
-                        "<red>You have an existing BatBoat; wait for it to be removed first.",
+                        "<red>You have an existing Bat Boat; wait for it to be removed first.",
                         true
                     )
                     return@handler
@@ -44,13 +44,13 @@ class BatBoatCommand : BaseCommand() {
 
         commandManager.buildAndRegister("forcebatboat") {
             permission = "tbdutils.command.batboat.spawn.force"
-            commandDescription("Spawns a BatBoat at the player's location")
+            commandDescription("Spawns a Bat Boat at the player's location")
 
-            argument(argumentDescription("The player to spawn the BatBoat for")) {
+            argument(argumentDescription("The player to spawn the Bat Boat for")) {
                 PlayerArgument.of("player")
             }
 
-            argument(argumentDescription("Spawns the BatBoat and attaches the player as a passenger")) {
+            argument(argumentDescription("Spawns the Bat Boat and attaches the player as a passenger")) {
                 BooleanArgument.builder<CommandSender>("attach").asOptionalWithDefault("false").build()
             }
 
@@ -61,7 +61,7 @@ class BatBoatCommand : BaseCommand() {
                 if (BatBoatManager.contains(player.uniqueId)) {
                     Chat.messageAudience(
                         it.sender,
-                        "<red>${player.name} has an existing BatBoat; remove it first.",
+                        "<red>${player.name} has an existing Bat Boat; remove it first.",
                         true
                     )
                     return@handler
@@ -73,7 +73,7 @@ class BatBoatCommand : BaseCommand() {
 
         commandManager.buildAndRegister("smitebats") {
             permission = "tbdutils.command.batboat.admin"
-            commandDescription("Removes a subset of BatBoats")
+            commandDescription("Removes a subset of Bat Boats")
 
             argument(argumentDescription("The player to forcefully remove the instance, if applicable")) {
                 PlayerArgument.builder<CommandSender>("player").asOptional().build()
@@ -86,14 +86,14 @@ class BatBoatCommand : BaseCommand() {
                     BatBoatManager.remove(player.uniqueId)
                     Chat.messageAudience(
                         it.sender,
-                        "<green>The BatBoat instance for ${player.name} has been removed if it existed.",
+                        "<green>The Bat Boat instance for ${player.name} has been removed if it existed.",
                         true
                     )
                     return@handler
                 }
 
                 BatBoatManager.removeAll()
-                Chat.messageAudience(it.sender, "<green>BatBoat instances have been cleared.", true)
+                Chat.messageAudience(it.sender, "<green>Bat Boat instances have been cleared.", true)
             }
         }
     }

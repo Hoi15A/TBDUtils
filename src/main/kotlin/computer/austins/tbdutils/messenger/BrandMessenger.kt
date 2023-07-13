@@ -6,7 +6,6 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.messaging.PluginMessageListener
 
 import java.io.UnsupportedEncodingException
-
 import java.nio.charset.Charset
 import java.util.*
 
@@ -16,8 +15,8 @@ class BrandMessenger : PluginMessageListener {
         try {
             val brand = String(message, Charset.defaultCharset()).substring(1)
                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-            val rawString = "<#db0060>${player.name}<white> joined using <#db0060>$brand<white>."
-            if(brand.lowercase() == "vanilla") {
+            val rawString = "<notifcolour>${player.name}<white> joined using <notifcolour>$brand<white>."
+            if(brand == "Vanilla") {
                 rawString.plus(" <dark_gray><i>(Could be OptiFine)")
             }
             Chat.broadcastDev(rawString, true)

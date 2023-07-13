@@ -14,7 +14,7 @@ class PlayerJoin : Listener {
     private fun onPlayerJoin(e: PlayerJoinEvent) {
         e.joinMessage(
             Chat.formatMessage(
-                "<tbdcolour><name><reset> joined the game.",
+                "<tbdcolour>[<green>+<tbdcolour>] <notifcolour><name><reset> joined the game.",
                 false,
                 Placeholder.component("name", e.player.name())
             )

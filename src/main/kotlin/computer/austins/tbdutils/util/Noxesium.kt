@@ -12,8 +12,10 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object Noxesium {
+    /** Map of online users playing with Noxesium installed, and the protocol of their version of Noxesium. **/
     private val noxesiumUsers = mutableMapOf<UUID, Int>()
 
+    /** Adds the requested player with their respective protocol version of Noxesium to the noxesiumUsers map. **/
     fun addNoxesiumUser(player : Player, protocolVersion : Int) {
         if(protocolVersion == NOXESIUM_LATEST_PROTOCOL) {
             noxesiumUsers[player.uniqueId] = protocolVersion
@@ -23,20 +25,24 @@ object Noxesium {
         }
     }
 
+    /** Removes the requested player from the noxesiumUsers map. **/
     fun removeNoxesiumUser(player : Player) {
         noxesiumUsers.remove(player.uniqueId)
         logger.info("Removed ${player.name} from Noxesium users.")
     }
 
+    /** Returns the noxesiumUsers map. **/
     fun getNoxesiumUsers() : Map<UUID, Int> {
         return noxesiumUsers
     }
 
+    /** Returns whether an online player is in the noxesiumUsers list or not. **/
     fun isNoxesiumUser(player : Player) : Boolean {
         return noxesiumUsers.containsKey(player.uniqueId)
     }
 
     /**
+    * Noxesium skull component builder that allows the displaying of player heads in chat for those that are utilising Noxesium.
     * @params
     * uuid: UUID of player's skull to build.
     * isGrayscale: Decide whether the skull should be coloured or grayscale.
@@ -49,6 +55,7 @@ object Noxesium {
         return Component.score("%NCPH%$uuid,$isGrayscale,$advance,$ascent,$scale", "")
     }
 
+    /** Resolves any MiniMessage <skull:NAME> tags used in messages. **/
     fun skullResolver() : TagResolver {
         return TagResolver.resolver("skull") { args, _ ->
             val rawName = args.popOr("Name not supplied.")
@@ -65,4 +72,5 @@ enum class NoxesiumChannel(val channel : String) {
     NOXESIUM_RESET_CHANNEL("noxesium:reset")
 }
 
+/** Latest protocol version of the Noxesium mod. **/
 const val NOXESIUM_LATEST_PROTOCOL = 2

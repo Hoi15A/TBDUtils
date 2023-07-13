@@ -15,7 +15,7 @@ class PlayerLeave : Listener {
     private fun onPlayerLeave(e: PlayerQuitEvent) {
         e.quitMessage(
             Chat.formatMessage(
-                "<tbdcolour><name><reset> left the game.",
+                "<tbdcolour>[<red>-<tbdcolour>] <notifcolour><name><reset> left the game.",
                 false,
                 Placeholder.component("name", e.player.name())
             )

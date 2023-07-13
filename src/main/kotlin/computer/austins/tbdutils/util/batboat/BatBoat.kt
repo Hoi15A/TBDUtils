@@ -1,6 +1,8 @@
 package computer.austins.tbdutils.util.batboat
 
 import computer.austins.tbdutils.plugin
+import computer.austins.tbdutils.util.Chat
+
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -24,13 +26,15 @@ class BatBoat(player: Player, attach: Boolean) {
         boat = spawnComponent(EntityType.BOAT, player)
 
         bat.addPassenger(boat)
-        if (attach) boat.addPassenger(player)
+        if(attach) boat.addPassenger(player)
 
         BatBoatManager.registerInstance(player.uniqueId, this)
+        Chat.broadcastDev("<notifcolour>${player.name} <green>created<reset> a <light_purple>Bat Boat<reset> at <yellow>${player.location.blockX}<reset>, <yellow>${player.location.blockY}<reset>, <yellow>${player.location.blockZ}<reset>.", true)
 
         object : BukkitRunnable() {
             override fun run() {
                 BatBoatManager.unregisterInstance(player.uniqueId)
+                Chat.broadcastDev("<notifcolour>${player.name}<reset>'s <light_purple>Bat Boat<red> despawned<reset> at <yellow>${player.location.blockX}<reset>, <yellow>${player.location.blockY}<reset>, <yellow>${player.location.blockZ}<reset>.", true)
                 remove()
             }
         }.runTaskLater(plugin, ENTITY_DURATION_SECONDS * 20)

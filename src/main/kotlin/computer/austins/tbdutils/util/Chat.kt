@@ -12,6 +12,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 object Chat {
+    /** Sends a global message. **/
     fun globalChat(player: Player, rawComponent: Component) {
         val message = PlainTextComponentSerializer.plainText().serialize(rawComponent)
 
@@ -40,37 +41,41 @@ object Chat {
         )
     }
 
+    /** Sends a message to the admin channel which includes all online admins. **/
     fun broadcastAdmin(rawMessage : String, isSilent: Boolean) {
         val admin = Audience.audience(Bukkit.getOnlinePlayers())
             .filterAudience { (it as Player).hasPermission("tbdutils.group.admin") }
         admin.sendMessage(
             allTags.deserialize("<prefix:admin>").append(allTags.deserialize(rawMessage))
         )
-        if (!isSilent) {
-            admin.playSound(Sounds.Admin.ADMIN_MESSAGE)
+        if(!isSilent) {
+            admin.playSound(Sounds.ADMIN_MESSAGE)
         }
     }
 
+    /** Sends a message to the dev channel which includes all online devs. **/
     fun broadcastDev(rawMessage : String, isSilent: Boolean) {
         val dev = Audience.audience(Bukkit.getOnlinePlayers())
             .filterAudience { (it as Player).hasPermission("tbdutils.group.dev") }
         dev.sendMessage(
             allTags.deserialize("<prefix:dev>").append(allTags.deserialize(rawMessage))
         )
-        if (!isSilent) {
-            dev.playSound(Sounds.Admin.ADMIN_MESSAGE)
+        if(!isSilent) {
+            dev.playSound(Sounds.ADMIN_MESSAGE)
         }
     }
 
+    /** Sends a message to the specified audience. **/
     fun messageAudience(recipient: Audience, message: String, restricted: Boolean, vararg placeholders: TagResolver) {
         val resolvers = mutableListOf<TagResolver>()
-        for (p in placeholders) {
+        for(p in placeholders) {
             resolvers.add(p)
         }
 
         recipient.sendMessage(formatMessage(message, restricted, TagResolver.resolver(resolvers)))
     }
 
+    /** Formats a message, which can produce different results depending on if restricted or not. **/
     fun formatMessage(message: String, restricted: Boolean, vararg placeholders: TagResolver): Component {
         val resolvers = mutableListOf<TagResolver>()
         for(p in placeholders) {
