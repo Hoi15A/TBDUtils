@@ -10,6 +10,7 @@ import cloud.commandframework.execution.CommandExecutionCoordinator
 import cloud.commandframework.extra.confirmation.CommandConfirmationManager
 import cloud.commandframework.meta.CommandMeta
 import cloud.commandframework.paper.PaperCommandManager
+import computer.austins.tbdutils.util.config.ConfigManager
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -30,6 +31,7 @@ class TBDUtils : JavaPlugin() {
         registerCommands()
         registerEvents()
         registerPluginMessengers()
+        ConfigManager.setup()
         logger.info("TBDUtils enabled.")
     }
 

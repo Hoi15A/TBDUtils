@@ -29,12 +29,12 @@ class BatBoat(player: Player, attach: Boolean) {
         if(attach) boat.addPassenger(player)
 
         BatBoatManager.registerInstance(player.uniqueId, this)
-        Chat.broadcastDev("<notifcolour>${player.name} <green>created<reset> a <light_purple>Bat Boat<reset> at <yellow>${player.location.blockX}<reset>, <yellow>${player.location.blockY}<reset>, <yellow>${player.location.blockZ}<reset>.", true)
+        Chat.broadcastDev("<notifcolour>${player.name} <reset>created a Bat Boat. <dark_gray><i>(${player.location.blockX}, ${player.location.blockY}, ${player.location.blockZ})", true)
 
         object : BukkitRunnable() {
             override fun run() {
                 BatBoatManager.unregisterInstance(player.uniqueId)
-                Chat.broadcastDev("<notifcolour>${player.name}<reset>'s <light_purple>Bat Boat<red> despawned<reset> at <yellow>${player.location.blockX}<reset>, <yellow>${player.location.blockY}<reset>, <yellow>${player.location.blockZ}<reset>.", true)
+                Chat.broadcastDev("<notifcolour>${player.name}<reset>'s Bat Boat despawned. <dark_gray><i>(${player.location.blockX}, ${player.location.blockY}, ${player.location.blockZ})", true)
                 remove()
             }
         }.runTaskLater(plugin, ENTITY_DURATION_SECONDS * 20)

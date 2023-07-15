@@ -1,6 +1,7 @@
 package computer.austins.tbdutils.event
 
 import computer.austins.tbdutils.util.Chat
+import computer.austins.tbdutils.util.tab.TabListManager
 
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 
@@ -19,5 +20,6 @@ class PlayerJoin : Listener {
                 Placeholder.component("name", e.player.name())
             )
         )
+        TabListManager.populateTabList(e.player)
     }
 }
