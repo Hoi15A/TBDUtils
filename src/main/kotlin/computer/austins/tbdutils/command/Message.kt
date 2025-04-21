@@ -1,20 +1,13 @@
 package computer.austins.tbdutils.command
 
-import cloud.commandframework.arguments.standard.StringArgument
-import cloud.commandframework.bukkit.parsers.PlayerArgument
-import cloud.commandframework.kotlin.extension.argumentDescription
-import cloud.commandframework.kotlin.extension.buildAndRegister
-import cloud.commandframework.paper.PaperCommandManager
 import computer.austins.tbdutils.util.Chat
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
 @Suppress("unused")
-class Message : BaseCommand() {
+class Message {/*
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.buildAndRegister(
             "msg",
@@ -71,7 +64,7 @@ class Reply : BaseCommand() {
                 }
             }
         }
-    }
+    }*/
 }
 
 private fun privateMessage(sender: Player, recipient: Player, message: String) {

@@ -12,10 +12,14 @@ object ConfigManager {
     private lateinit var quotesFile : File
     private lateinit var quotesConfig : FileConfiguration
 
+    private lateinit var eventFile : File
+    private lateinit var eventConfig : FileConfiguration
+
     fun setup() {
         plugin.config.options().copyDefaults()
         plugin.saveDefaultConfig()
         setupQuotesConfig()
+        setupEventConfig()
     }
 
     private fun setupQuotesConfig() {
@@ -34,6 +38,12 @@ object ConfigManager {
         }
     }
 
+    private fun setupEventConfig() {
+        eventFile = File(Bukkit.getServer().pluginManager.getPlugin("TBDUtils")!!.dataFolder, "event.yml")
+        generateConfigIfNull(eventFile)
+        eventConfig = YamlConfiguration.loadConfiguration(eventFile)
+    }
+
     fun saveConfig(file : File, fileConfiguration : FileConfiguration) {
         try {
             fileConfiguration.save(file)
@@ -47,14 +57,28 @@ object ConfigManager {
             TBDConfig.QUOTES -> {
                 quotesConfig = YamlConfiguration.loadConfiguration(quotesFile)
             }
+            TBDConfig.EVENT -> {
+                eventConfig = YamlConfiguration.loadConfiguration(eventFile)
+            }
         }
     }
 
-    fun getQuotesConfig() : FileConfiguration {
-        return quotesConfig
+    fun getFile(config : TBDConfig) : File {
+        return when(config) {
+            TBDConfig.QUOTES -> quotesFile
+            TBDConfig.EVENT -> eventFile
+        }
+    }
+
+    fun getConfig(config : TBDConfig) : FileConfiguration {
+        return when(config) {
+            TBDConfig.QUOTES -> quotesConfig
+            TBDConfig.EVENT -> eventConfig
+        }
     }
 }
 
 enum class TBDConfig(val displayName : String, val configFile : String) {
-    QUOTES("Quotes", "quotes.yml")
+    QUOTES("Quotes", "quotes.yml"),
+    EVENT("Event", "event.yml")
 }

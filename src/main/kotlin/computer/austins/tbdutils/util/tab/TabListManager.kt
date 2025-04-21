@@ -2,6 +2,7 @@ package computer.austins.tbdutils.util.tab
 
 import computer.austins.tbdutils.util.Chat
 import computer.austins.tbdutils.util.config.ConfigManager
+import computer.austins.tbdutils.util.config.TBDConfig
 
 import org.bukkit.entity.Player
 
@@ -12,7 +13,7 @@ object TabListManager {
     private var footer = ""
 
     fun populateTabList(player : Player) {
-        val quotesList = ConfigManager.getQuotesConfig().getStringList("quotes")
+        val quotesList = ConfigManager.getConfig(TBDConfig.QUOTES).getStringList("quotes")
         footer = if(quotesList.isEmpty()) {
             "<gray><i>'Quote not found.'<newline>"
         } else {

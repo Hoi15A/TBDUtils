@@ -1,33 +1,17 @@
 package computer.austins.tbdutils.command
 
-import cloud.commandframework.arguments.standard.BooleanArgument
-import cloud.commandframework.bukkit.parsers.PlayerArgument
-import cloud.commandframework.kotlin.extension.argumentDescription
-import cloud.commandframework.kotlin.extension.buildAndRegister
-import cloud.commandframework.paper.PaperCommandManager
-import computer.austins.tbdutils.util.batboat.BatBoat
-import computer.austins.tbdutils.util.batboat.BatBoatManager
-import computer.austins.tbdutils.util.Chat
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-import kotlin.jvm.optionals.getOrNull
-
 @Suppress("unused")
-class BatBoatCommand : BaseCommand() {
+class BatBoatCommand {/*
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.buildAndRegister("batboat") {
             permission = "tbdutils.command.batboat.spawn.self"
-            commandDescription("Spawns a Bat Boat at the player's location")
-
-            argument(argumentDescription("Spawns the Bat Boat and attaches the sender as a passenger")) {
-                BooleanArgument.builder<CommandSender>("attach").asOptionalWithDefault("false").build()
-            }
+            required("attach", BooleanParser(true))
 
             handler {
                 val attach = it.get<Boolean>("attach")
 
-                if (it.sender !is Player) return@handler
-                val sender = it.sender as Player
+                if (it.sender() !is Player) return@handler
+                val sender = it.sender() as Player
 
                 if (BatBoatManager.contains(sender.uniqueId)) {
                     Chat.messageAudience(
@@ -96,5 +80,5 @@ class BatBoatCommand : BaseCommand() {
                 Chat.messageAudience(it.sender, "<green>Bat Boat instances have been cleared.", true)
             }
         }
-    }
+    }*/
 }

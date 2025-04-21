@@ -3,6 +3,7 @@ package computer.austins.tbdutils.util
 import computer.austins.tbdutils.logger
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
@@ -17,11 +18,12 @@ object Noxesium {
 
     /** Adds the requested player with their respective protocol version of Noxesium to the noxesiumUsers map. **/
     fun addNoxesiumUser(player : Player, protocolVersion : Int) {
-        if(protocolVersion == NOXESIUM_LATEST_PROTOCOL) {
+        logger.info("${player.name} is on Noxesium protocol $protocolVersion.")
+        if(protocolVersion >= NOXESIUM_MINIMUM_PROTOCOL) {
             noxesiumUsers[player.uniqueId] = protocolVersion
             logger.info("Passed ${player.name} as a Noxesium user.")
         } else {
-            logger.warning("Unable to pass ${player.name} as Noxesium user as their protocol version is $protocolVersion when it should be $NOXESIUM_LATEST_PROTOCOL.")
+            logger.warning("Unable to pass ${player.name} as Noxesium user as their protocol version is $protocolVersion when it should be $NOXESIUM_MINIMUM_PROTOCOL or higher.")
         }
     }
 
@@ -52,7 +54,7 @@ object Noxesium {
     * Standard coloured skull params may look like: (uuid, false, 0, 0, 1.0)
     * */
     fun buildSkullComponent(uuid : UUID, isGrayscale : Boolean, advance : Int, ascent : Int, scale : Float) : Component {
-        return Component.score("%NCPH%$uuid,$isGrayscale,$advance,$ascent,$scale", "")
+        return Component.translatable("%nox_uuid%$uuid,$isGrayscale,$advance,$ascent,$scale", "").color(NamedTextColor.WHITE)
     }
 
     /** Resolves any MiniMessage <skull:NAME> tags used in messages. **/
@@ -65,12 +67,13 @@ object Noxesium {
 }
 
 @Suppress("unused")
+/** Channels are only server-bound. **/
 enum class NoxesiumChannel(val channel : String) {
-    NOXESIUM_CLIENT_INFORMATION_CHANNEL("noxesium:client_information"),
-    NOXESIUM_CLIENT_SETTINGS_CHANNEL("noxesium:client_settings"),
-    NOXESIUM_SERVER_RULE_CHANNEL("noxesium:server_rules"),
-    NOXESIUM_RESET_CHANNEL("noxesium:reset")
+    NOXESIUM_V1_CLIENT_INFORMATION_CHANNEL("noxesium-v1:client_info"),
+    NOXESIUM_V1_CLIENT_SETTINGS_CHANNEL("noxesium-v1:client_settings"),
+    NOXESIUM_V2_CLIENT_INFORMATION_CHANNEL("noxesium-v2:client_info"),
+    NOXESIUM_V2_CLIENT_SETTINGS_CHANNEL("noxesium-v2:client_settings")
 }
 
-/** Latest protocol version of the Noxesium mod. **/
-const val NOXESIUM_LATEST_PROTOCOL = 2
+/** Minimum protocol version required of the Noxesium mod. **/
+const val NOXESIUM_MINIMUM_PROTOCOL = 2

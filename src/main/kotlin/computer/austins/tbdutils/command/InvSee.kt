@@ -1,19 +1,8 @@
 package computer.austins.tbdutils.command
 
-import cloud.commandframework.bukkit.parsers.PlayerArgument
-import cloud.commandframework.kotlin.extension.argumentDescription
-import cloud.commandframework.kotlin.extension.buildAndRegister
-import cloud.commandframework.paper.PaperCommandManager
-
-import computer.austins.tbdutils.logger
-import computer.austins.tbdutils.util.Chat
-import computer.austins.tbdutils.util.Sounds
-
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-
 @Suppress("unused")
-class InvSee : BaseCommand() {
+class InvSee {
+    /*
     override fun register(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.buildAndRegister("invsee") {
             permission = "tbdutils.command.invsee"
@@ -47,5 +36,5 @@ class InvSee : BaseCommand() {
                 }
             }
         }
-    }
+    }*/
 }

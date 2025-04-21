@@ -1,137 +1,123 @@
 package computer.austins.tbdutils
 
-import computer.austins.tbdutils.command.BaseCommand
 import computer.austins.tbdutils.messenger.BrandMessenger
 import computer.austins.tbdutils.messenger.NoxesiumMessenger
 import computer.austins.tbdutils.util.NoxesiumChannel
 import computer.austins.tbdutils.util.batboat.BatBoatManager
-
-import cloud.commandframework.execution.CommandExecutionCoordinator
-import cloud.commandframework.extra.confirmation.CommandConfirmationManager
-import cloud.commandframework.meta.CommandMeta
-import cloud.commandframework.paper.PaperCommandManager
 import computer.austins.tbdutils.util.config.ConfigManager
+import computer.austins.tbdutils.util.CustomNametag
+
+import io.papermc.paper.command.brigadier.CommandSourceStack
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 
 import org.bukkit.Bukkit
-import org.bukkit.command.CommandSender
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
+import org.incendo.cloud.annotations.AnnotationParser
+import org.incendo.cloud.description.CommandDescription
+import org.incendo.cloud.execution.ExecutionCoordinator
+import org.incendo.cloud.paper.PaperCommandManager
+import org.incendo.cloud.processors.cache.SimpleCache
+import org.incendo.cloud.processors.confirmation.ConfirmationConfiguration
+import org.incendo.cloud.processors.confirmation.ConfirmationManager
+import org.incendo.cloud.processors.confirmation.annotation.ConfirmationBuilderModifier
+
 import org.reflections.Reflections
 
-import java.util.*
-import java.util.concurrent.TimeUnit
+import java.lang.Exception
+import java.time.Duration
+import java.util.function.Consumer
 
-@Suppress("unused")
+@Suppress("unused", "unstableApiUsage")
 class TBDUtils : JavaPlugin() {
+    private lateinit var commandManager: PaperCommandManager<CommandSourceStack>
+    private lateinit var annotationParser: AnnotationParser<CommandSourceStack>
     override fun onEnable() {
-        registerCommands()
-        registerEvents()
-        registerPluginMessengers()
+        setupCommands()
+        setupEventListeners()
+        setupPluginMessageListener()
         ConfigManager.setup()
+        CustomNametag.setup()
         logger.info("TBDUtils enabled.")
     }
 
     override fun onDisable() {
         BatBoatManager.removeAll()
+        CustomNametag.destroy()
         logger.info("TBDUtils disabled.")
     }
 
-    private fun registerCommands() {
+    private fun setupCommands() {
         logger.info("Registering commands.")
-        val commandManager: PaperCommandManager<CommandSender> = try {
-            PaperCommandManager.createNative(
-                this,
-                CommandExecutionCoordinator.simpleCoordinator()
-            )
-        } catch (e: Exception) {
-            logger.severe("Failed to initialize the command manager.")
-            server.pluginManager.disablePlugin(this)
-            return
-        }
+        commandManager = PaperCommandManager.builder()
+            .executionCoordinator(ExecutionCoordinator.simpleCoordinator())
+            .buildOnEnable(this)
 
-        commandManager.registerAsynchronousCompletions()
-        commandManager.registerBrigadier()
-        setupCommandConfirmation(commandManager)
+        annotationParser = AnnotationParser(commandManager, CommandSourceStack::class.java)
+        annotationParser.parseContainers()
 
-        commandManager.commandSuggestionProcessor { context, strings ->
-            var input: String = if (context.inputQueue.isEmpty()) {
-                ""
-            } else {
-                context.inputQueue.peek()
-            }
-            input = input.lowercase(Locale.getDefault())
-            val suggestions: MutableList<String> = LinkedList()
-            for (suggestion in strings) {
-                val suggestionLower = suggestion.lowercase(Locale.getDefault())
-                if (suggestionLower.startsWith(input)) {
-                    suggestions.add(suggestion)
-                }
-            }
-            suggestions
-        }
-
-        val reflections = Reflections("computer.austins.tbdutils.command")
-        val commands = reflections.getSubTypesOf(BaseCommand::class.java)
-        commands.forEach {
-            it.getConstructor().newInstance().register(commandManager)
-        }
+        setupCommandConfirmation()
     }
 
-    private fun registerEvents() {
-        logger.info("Registering event listeners.")
+    private fun setupCommandConfirmation() {
+        logger.info("Setting up command confirmation.")
+        val confirmationConfig = ConfirmationConfiguration.builder<CommandSourceStack>()
+            .cache(SimpleCache.of())
+            .noPendingCommandNotifier { css ->
+                css.sender.sendMessage(
+                    Component.text(
+                        "You do not have any pending commands.",
+                        NamedTextColor.RED
+                    )
+                ) }
+            .confirmationRequiredNotifier { css, ctx ->
+                css.sender.sendMessage(
+                    Component.text("Confirm command ", NamedTextColor.RED).append(
+                        Component.text("'/${ctx.commandContext()}' ", NamedTextColor.GREEN)
+                    ).append(Component.text("by running ", NamedTextColor.RED)).append(
+                        Component.text("'/confirm' ", NamedTextColor.YELLOW)
+                    ).append(Component.text("to execute.", NamedTextColor.RED))
+                ) }
+            .expiration(Duration.ofSeconds(30))
+            .build()
+
+        val confirmationManager = ConfirmationManager.confirmationManager(confirmationConfig)
+        commandManager.registerCommandPostProcessor(confirmationManager.createPostprocessor())
+
+        commandManager.command(
+            commandManager.commandBuilder("confirm")
+                .handler(confirmationManager.createExecutionHandler())
+                .commandDescription(CommandDescription.commandDescription("Confirm a pending command."))
+                .permission("tbdutils.confirm")
+                .build()
+        )
+        ConfirmationBuilderModifier.install(annotationParser)
+    }
+
+    private fun setupEventListeners() {
+        logger.info("Registering events.")
         val reflections = Reflections("computer.austins.tbdutils.event")
         val listeners = reflections.getSubTypesOf(Listener::class.java)
-        listeners.forEach { listener: Class<out Listener> ->
-            val instance = listener.getConstructor().newInstance()
-            server.pluginManager.registerEvents(instance, this)
+
+        listeners.forEach(Consumer { listener : Class<out Listener> ->
+            try {
+                val instance = listener.getConstructor().newInstance()
+                server.pluginManager.registerEvents(instance, this)
+            } catch (e : Exception) {
+                e.printStackTrace()
+            }
         }
+        )
     }
 
-    private fun setupCommandConfirmation(commandManager: PaperCommandManager<CommandSender>) {
-        try {
-            val confirmationManager: CommandConfirmationManager<CommandSender> = CommandConfirmationManager(
-                30L, TimeUnit.SECONDS,
-                { context ->
-                    context.commandContext.sender.sendMessage(
-                        Component.text("Confirm command ", NamedTextColor.RED).append(
-                            Component.text("'/${context.command}' ", NamedTextColor.GREEN)
-                        ).append(Component.text("by running ", NamedTextColor.RED)).append(
-                            Component.text("'/confirm' ", NamedTextColor.YELLOW)
-                        ).append(Component.text("to execute.", NamedTextColor.RED))
-                    )
-                },
-                { sender ->
-                    sender.sendMessage(
-                        Component.text(
-                            "You do not have any pending commands.",
-                            NamedTextColor.RED
-                        )
-                    )
-                }
-            )
-            confirmationManager.registerConfirmationProcessor(commandManager)
-
-            commandManager.command(
-                commandManager.commandBuilder("confirm")
-                    .meta(CommandMeta.DESCRIPTION, "Confirm a pending command.")
-                    .handler(confirmationManager.createConfirmationExecutionHandler())
-                    .permission("tbdutils.confirm")
-            )
-
-        } catch(e : Exception) {
-            logger.severe("Failed to initialize command confirmation manager.")
-            return
-        }
-    }
-
-    private fun registerPluginMessengers() {
+    private fun setupPluginMessageListener() {
         logger.info("Registering plugin messengers.")
         messenger.registerIncomingPluginChannel(this, "minecraft:brand", BrandMessenger())
-        messenger.registerIncomingPluginChannel(this, NoxesiumChannel.NOXESIUM_CLIENT_INFORMATION_CHANNEL.channel, NoxesiumMessenger())
+        messenger.registerIncomingPluginChannel(this, NoxesiumChannel.NOXESIUM_V1_CLIENT_INFORMATION_CHANNEL.channel, NoxesiumMessenger())
+        messenger.registerIncomingPluginChannel(this, NoxesiumChannel.NOXESIUM_V2_CLIENT_INFORMATION_CHANNEL.channel, NoxesiumMessenger())
     }
 }
 

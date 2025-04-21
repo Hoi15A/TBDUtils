@@ -1,9 +1,12 @@
 package computer.austins.tbdutils.event
 
+import computer.austins.tbdutils.plugin
 import computer.austins.tbdutils.util.Chat
 import computer.austins.tbdutils.util.tab.TabListManager
+import computer.austins.tbdutils.util.vanish.VanishManager
 
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import org.bukkit.Bukkit
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,5 +24,8 @@ class PlayerJoin : Listener {
             )
         )
         TabListManager.populateTabList(e.player)
+        for(vanished in VanishManager.getInstances()) {
+            e.player.hidePlayer(plugin, vanished.value)
+        }
     }
 }
